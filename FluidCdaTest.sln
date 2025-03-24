@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluidCdaTest", "FluidCdaTest\FluidCdaTest.csproj", "{35911C19-BE40-4A4E-9ABD-4EEB2182EC67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluidCdaTest.Benchmark", "FluidCdaTest.Benchmark\FluidCdaTest.Benchmark.csproj", "{6D00DD21-8121-4FB2-A5B9-402600328A1D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35911C19-BE40-4A4E-9ABD-4EEB2182EC67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35911C19-BE40-4A4E-9ABD-4EEB2182EC67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35911C19-BE40-4A4E-9ABD-4EEB2182EC67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35911C19-BE40-4A4E-9ABD-4EEB2182EC67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D00DD21-8121-4FB2-A5B9-402600328A1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D00DD21-8121-4FB2-A5B9-402600328A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D00DD21-8121-4FB2-A5B9-402600328A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D00DD21-8121-4FB2-A5B9-402600328A1D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB1AE1D7-5A9B-42BE-9AAB-9EF2FE1E4DF7}
+	EndGlobalSection
+EndGlobal

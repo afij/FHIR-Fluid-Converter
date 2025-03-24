@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageReference Include="Fluid.Core" Version="2.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FluidCdaTest\FluidCdaTest.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Health.Fhir.Liquid.Converter">
+      <HintPath>..\..\FHIR-Converter\src\Microsoft.Health.Fhir.Liquid.Converter.Tool\bin\Release\netcoreapp3.1\Microsoft.Health.Fhir.Liquid.Converter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Health.Fhir.Liquid.Converter.Tool">
+      <HintPath>..\..\FHIR-Converter\src\Microsoft.Health.Fhir.Liquid.Converter.Tool\bin\Release\netcoreapp3.1\Microsoft.Health.Fhir.Liquid.Converter.Tool.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
