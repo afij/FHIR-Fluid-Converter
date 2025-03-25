@@ -25,7 +25,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
             _parser.RegisterCustomTags();
             _templateOptions.Filters.RegisterCustomFilters();
 
-            CachedCDAFileProvider provider = new CachedCDAFileProvider(TestRootTemplateDir);
+            CachedCDAFileProvider provider = new CachedCDAFileProvider(BenchmarkConstants.TemplatesPath);
             _templateOptions.FileProvider = provider;
         }
 
@@ -43,18 +43,5 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         {
             return _template.Render(_templateContext);
         }
-
-        //[Benchmark]
-        //protected override string ExecuteBenchmarkParseAndRender()
-        //{
-        //    _parser.TryParse(TestRootTemplateContent, out var template);
-        //    var context = new TemplateContext(new Dictionary<string, object> { { "msg", TestObject } }, _options);
-
-        //    // Preload ValueSet data as CodeMapping obj
-        //    var valueSetString = ((CachedCDAFileProvider)_options.FileProvider).ReadTemplateFile(@"ValueSet/ValueSet");
-        //    context.AmbientValues.Add(GeneralFilters.CODE_MAPPING_VALUE_NAME, TemplateUtility.ParseCodeMapping(valueSetString));
-
-        //    return template.Render(context);
-        //}
     }
 }

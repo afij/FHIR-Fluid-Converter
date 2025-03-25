@@ -28,7 +28,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
             parser.RegisterCustomTags();
             _templateOptions.Filters.RegisterCustomFilters();
 
-            CDAFileProvider provider = new CDAFileProvider(TestRootTemplateDir);
+            CDAFileProvider provider = new CDAFileProvider(BenchmarkConstants.TemplatesPath);
             _templateOptions.FileProvider = provider;
 
             parser.TryParse(TestRootTemplateContent, out _template);
@@ -42,34 +42,6 @@ namespace FluidCdaTest.Benchmark.Benchmarks
             _templateContext.AmbientValues.Add(GeneralFilters.CODE_MAPPING_VALUE_NAME, TemplateUtility.ParseCodeMapping(valueSetString));
 
             return _template.Render(_templateContext);
-        }
-
-        //[Benchmark]
-        //protected override string ExecuteBenchmarkParseAndRender()
-        //{
-
-        //    TemplateOptions options = new TemplateOptions();
-        //    CCDParser parser = new CCDParser();
-
-        //    parser.RegisterCustomTags();
-        //    options.Filters.RegisterCustomFilters();
-
-        //    CDAFileProvider provider = new CDAFileProvider(TestRootTemplateDir);
-        //    options.FileProvider = provider;
-
-        //    parser.TryParse(TestRootTemplateContent, out var template);
-        //    var context = new TemplateContext(new Dictionary<string, object> { { "msg", TestObject } }, options);
-
-        //    // Preload ValueSet data as CodeMapping obj
-        //    var valueSetString = ((CDAFileProvider)options.FileProvider).ReadTemplateFile(@"ValueSet/ValueSet");
-        //    context.AmbientValues.Add(GeneralFilters.CODE_MAPPING_VALUE_NAME, TemplateUtility.ParseCodeMapping(valueSetString));
-
-        //    return template.Render(context);
-        //}
-
-        public override string ExecuteBenchmark()
-        {
-            return base.ExecuteBenchmark();
         }
     }
 }

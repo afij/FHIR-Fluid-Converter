@@ -7,26 +7,18 @@ namespace FluidCdaTest.Benchmark.Benchmarks
     {
         protected static string TestContent = null;
         protected static object TestObject = null;
-        protected static string TestRootTemplateDir = @"C:\work\HAG-FHIR\HAG.FHIR.API\data\Templates\Ccda";
-        protected static string TestRootTemplateFile = @"C:\work\HAG-FHIR\HAG.FHIR.API\data\Templates\Ccda\CCD.liquid";
         protected static string TestRootTemplateContent = null;
 
-        [Params(@"C:\work\FluidCdaTest\data\SampleData\CDA.ccda", @"C:\work\FluidCdaTest\data\SampleData\testModel.txt")]
-        public string FilePath { get; set; }
+        [Params(@"CDA.ccda", @"testModel.txt")]
+        public string InputPayloadFileName { get; set; }
 
-        static BaseBenchmark()
-        {
-            //var assembly = typeof(BaseBenchmark).Assembly;
-            //TestContent = File.ReadAllText(@"C:\work\FluidCdaTest\data\SampleData\testModel.txt");
-            //TestContent = File.ReadAllText(@"C:\work\FluidCdaTest\data\SampleData\CDA.ccda");
-            //TestContent = File.ReadAllText(@"C:\work\FluidCdaTest\CurrentCDA-Test1g.txt");
-        }
+        public string InputPayloadFilePath => BenchmarkConstants.SampleDataPath + InputPayloadFileName;
 
         public string ParseAndRender(string inputFilePath)
         {
             TestContent = File.ReadAllText(inputFilePath);
             TestObject = Processors.PreProcessor.ParseToObject(TestContent);
-            TestRootTemplateContent = File.ReadAllText(TestRootTemplateFile);
+            TestRootTemplateContent = File.ReadAllText(BenchmarkConstants.RootTemplatePath);
 
             Parse();
             return Render();
@@ -39,7 +31,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         [Benchmark]
         public virtual string ExecuteBenchmark()
         {
-            return ParseAndRender(FilePath);
+            return ParseAndRender(InputPayloadFilePath);
         }
 
     }

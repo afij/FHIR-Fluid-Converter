@@ -21,7 +21,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
             ConverterOptions _options = new ConverterOptions()
             {
                 InputDataContent = TestContent,
-                TemplateDirectory = @"C:\work\FluidCdaTest\FluidCdaTest.Benchmark\DevBranchTemplates\Ccda",
+                TemplateDirectory = BenchmarkConstants.DevTemplatesPath,
                 RootTemplate = "CCD",
             };
 

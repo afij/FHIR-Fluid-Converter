@@ -6,8 +6,10 @@ namespace FluidCdaTest.Benchmark.Benchmarks
     [MemoryDiagnoser, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
     public class ComparisonBenchmarks
     {
-        [Params(@"C:\work\FluidCdaTest\data\SampleData\CDA.ccda", @"C:\work\FluidCdaTest\data\SampleData\testModel.txt")]
-        public string FilePath { get; set; }
+        [Params(@"CDA.ccda", @"testModel.txt")]
+        public string InputPayloadFileName { get; set; }
+
+        public string InputPayloadFilePath => BenchmarkConstants.SampleDataPath + InputPayloadFileName;
 
         private readonly FluidCachedBenchmark _cachedFluidBenchmarks = new FluidCachedBenchmark();
         private readonly FluidCachedParserOnlyBenchmark _partialCachedFluidBenchmarks = new FluidCachedParserOnlyBenchmark();
@@ -17,25 +19,25 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         [Benchmark, BenchmarkCategory("ParseAndRender")]
         public object Fluid_Parse_Cache()
         {
-            return _cachedFluidBenchmarks.ParseAndRender(FilePath);
+            return _cachedFluidBenchmarks.ParseAndRender(InputPayloadFilePath);
         }
 
         [Benchmark, BenchmarkCategory("ParseAndRender")]
         public object Fluid_Parse_PartialCache()
         {
-            return _partialCachedFluidBenchmarks.ParseAndRender(FilePath);
+            return _partialCachedFluidBenchmarks.ParseAndRender(InputPayloadFilePath);
         }
 
         [Benchmark, BenchmarkCategory("ParseAndRender")]
         public object Fluid_Parse_NoCache()
         {
-            return _fluidBenchmarks.ParseAndRender(FilePath);
+            return _fluidBenchmarks.ParseAndRender(InputPayloadFilePath);
         }
 
         [Benchmark(Baseline = true), BenchmarkCategory("ParseAndRender")]
         public object FhirConverter_Parse()
         {
-            return _fhirConverterBenchmarks.ParseAndRender(FilePath);
+            return _fhirConverterBenchmarks.ParseAndRender(InputPayloadFilePath);
         }
     }
 }
