@@ -7,20 +7,24 @@ namespace FluidCdaTest.Benchmark.Benchmarks
     [MemoryDiagnoser]
     public class FhirConverterBenchmark : BaseBenchmark
     {
-        private readonly ConverterOptions _options = new ConverterOptions()
-        {
-            InputDataContent = TestContent,
-            TemplateDirectory = @"C:\work\FluidCdaTest\FluidCdaTest.Benchmark\DevBranchTemplates\Ccda",
-            RootTemplate = "CCD",
-        };
-
         public FhirConverterBenchmark()
         {
         }
 
-        [Benchmark]
-        public override string ParseAndRender()
+        public override void Parse()
         {
+            // Do nothing
+        }
+
+        public override string Render()
+        {
+            ConverterOptions _options = new ConverterOptions()
+            {
+                InputDataContent = TestContent,
+                TemplateDirectory = @"C:\work\FluidCdaTest\FluidCdaTest.Benchmark\DevBranchTemplates\Ccda",
+                RootTemplate = "CCD",
+            };
+
             var convertedFhirString = ConverterLogicHandler.ConvertToString(_options);
             return convertedFhirString;
         }
