@@ -19,6 +19,13 @@ namespace FluidCdaTest.Filters
             filters.AddFilter("get_first_ccda_sections_by_template_id", GetFirstCcdaSectionsByTemplateId);
         }
 
+        /// <summary>
+        /// Returns first instance of the section by name
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static ValueTask<FluidValue> GetFirstCcdaSections(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             //var sectionLists = GetCcdaSectionLists(input, arguments.At(0).ToString());
@@ -69,6 +76,13 @@ namespace FluidCdaTest.Filters
             return result;
         }
 
+        /// <summary>
+        /// Returns first instance of the section by template ID
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static async ValueTask<FluidValue> GetFirstCcdaSectionsByTemplateId(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             //var result = new Dictionary<string, object>();

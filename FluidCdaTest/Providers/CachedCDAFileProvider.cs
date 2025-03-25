@@ -7,6 +7,9 @@ using System.IO;
 
 namespace FluidCdaTest.Providers
 {
+    /// <summary>
+    /// Custom IFileProvider that caches file content to avoid rereading the disk during execution. Used to access files for include and render statements
+    /// </summary>
     public class CachedCDAFileProvider : IFileProvider
     {
         private readonly PhysicalFileProvider _innerProvider;

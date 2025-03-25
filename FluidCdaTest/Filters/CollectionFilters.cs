@@ -1,5 +1,6 @@
 ﻿using Fluid;
 using Fluid.Values;
+using FluidCdaTest.Parsers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,13 @@ namespace FluidCdaTest.Filters
             filters.AddFilter("batch_render", BatchRender);
         }
 
+        /// <summary>
+        /// Return an array like object created from a given object
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static ValueTask<FluidValue> ToArray(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             if (input == null || input is NilValue)
@@ -39,6 +47,14 @@ namespace FluidCdaTest.Filters
             }
         }
 
+        /// <summary>
+        /// Render every entry in a collection with a snippet and a variable name set in snippet
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static async ValueTask<FluidValue> BatchRender(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             context.EnterChildScope();

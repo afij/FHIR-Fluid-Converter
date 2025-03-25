@@ -1,25 +1,31 @@
-﻿using Fluid.Values;
-using Fluid;
+﻿using Fluid;
+using Fluid.Values;
+using FluidCdaTest.Models;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
-using FluidCdaTest.Models;
-using System.Data;
-using System.Security.Cryptography;
 
 namespace FluidCdaTest.Filters
 {
     public static class GeneralFilters
     {
-        public const string CODE_MAPPING_VALUE_NAME = "CodeMapping"; 
+        public const string CODE_MAPPING_VALUE_NAME = "CodeMapping";
         public static void RegisterGeneralFilters(this FilterCollection filters)
         {
             filters.AddFilter("get_property", GetProperty);
             filters.AddFilter("generate_uuid", GenerateUUID);
         }
 
+        /// <summary>
+        /// Returns a specific property of a coding with mapping file CodeSystem.json
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static ValueTask<FluidValue> GetProperty(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             string valueSetType = null;
@@ -46,6 +52,13 @@ namespace FluidCdaTest.Filters
             return new StringValue(returnValue);
         }
 
+        /// <summary>
+        /// Generates an ID based on an input string
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static ValueTask<FluidValue> GenerateUUID(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             if (input.ToStringValue() == "null" || string.IsNullOrWhiteSpace(input.ToStringValue()))

@@ -1,15 +1,14 @@
-﻿using Fluid.Values;
-using Fluid;
+﻿using Fluid;
+using Fluid.Values;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.Linq;
-using System.IO.Compression;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace FluidCdaTest.Filters
 {
@@ -23,6 +22,13 @@ namespace FluidCdaTest.Filters
             //filters.AddFilter("replace", Replace);
         }
 
+        /// <summary>
+        /// Convert input into a JSON string value
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static ValueTask<FluidValue> ToJsonString(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             if (input is ArrayValue)
@@ -42,6 +48,13 @@ namespace FluidCdaTest.Filters
             return data == null ? null : JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.None);
         }
 
+        /// <summary>
+        /// Returns an array containing matches with a regular expression
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static ValueTask<FluidValue> Matches(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             if (string.IsNullOrEmpty(input.ToStringValue()))
@@ -54,13 +67,26 @@ namespace FluidCdaTest.Filters
             return FluidValue.Create(matches, context.Options);
         }
 
-        // Override's fluids replace filter - upgraded to perform regex replace
+        /// <summary>
+        /// Override's fluids replace filter - upgraded to perform regex replace
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static ValueTask<FluidValue> Replace(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             var output = Regex.Replace(input.ToStringValue(), arguments.At(0).ToStringValue(), arguments.At(1).ToStringValue());
             return new StringValue(output);
         }
 
+        /// <summary>
+        /// GZIP compresses input string
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static ValueTask<FluidValue> Gzip(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             using var inputStream = new MemoryStream(Encoding.UTF8.GetBytes(input.ToStringValue()));

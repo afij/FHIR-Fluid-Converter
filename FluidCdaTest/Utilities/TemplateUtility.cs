@@ -1,14 +1,17 @@
 ﻿using FluidCdaTest.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Resources;
-using System.Text;
 
 namespace FluidCdaTest.Utilities
 {
     public class TemplateUtility
     {
+        /// <summary>
+        /// Deserialize string content into CodeMapping object
+        /// </summary>
+        /// <param name="content">String containing serialized CodeMappingObject</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static CodeMapping ParseCodeMapping(string content)
         {
             if (content == null)

@@ -1,16 +1,10 @@
-﻿using Fluid.Values;
-using Fluid;
+﻿using Fluid;
+using Fluid.Values;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Reflection;
-using Parlot.Fluent;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace FluidCdaTest.Filters
 {
@@ -160,6 +154,13 @@ namespace FluidCdaTest.Filters
         //            }
         //        }
 
+        /// <summary>
+        /// Converts input to a JSON string
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static async ValueTask<FluidValue> Json(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             var indented = arguments.At(0).ToBooleanValue();

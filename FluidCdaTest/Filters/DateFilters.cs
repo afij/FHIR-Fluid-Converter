@@ -1,11 +1,8 @@
-﻿using Fluid.Values;
-using Fluid;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Resources;
+﻿using Fluid;
+using Fluid.Values;
 using FluidCdaTest.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace FluidCdaTest.Filters
 {
@@ -18,6 +15,15 @@ namespace FluidCdaTest.Filters
             filters.AddFilter("now", Now);
         }
 
+        /// <summary>
+        /// Format valid CCDA date time to valid FHIR datetime format
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        /// <remarks>Provides parameters to handle different time zones: preserve, utc, local. Default is preserve</remarks>
+        /// <exception cref="Exception"></exception>
         public static ValueTask<FluidValue> FormatAsDateTime(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             var timeZoneHandling = "local";
@@ -49,6 +55,14 @@ namespace FluidCdaTest.Filters
             return FluidValue.Create(dateTimeObject.ToFhirString(outputTimeZoneHandling), context.Options);
         }
 
+        /// <summary>
+        /// Adds hyphens to a date or a partial date that does not have hyphens to make it into a valid FHIR format
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static ValueTask<FluidValue> AddHyphensDate(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             var timeZoneHandling = "preserve";
@@ -81,6 +95,13 @@ namespace FluidCdaTest.Filters
             return FluidValue.Create(dateTimeObject.ToFhirString(outputTimeZoneHandling), context.Options);
         }
 
+        /// <summary>
+        /// Provides the current time in yyyy-MM-ddTHH:mm:ss.FFFZ format
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static ValueTask<FluidValue> Now(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
             string format = "yyyy-MM-ddTHH:mm:ss.FFFZ";

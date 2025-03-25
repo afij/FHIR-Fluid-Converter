@@ -1,15 +1,13 @@
-﻿using Fluid.Parser;
-using Microsoft.Extensions.FileProviders;
+﻿using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Resources;
-using System.Text;
 
 namespace FluidCdaTest.Providers
 {
+    /// <summary>
+    /// Custom IFileProvider used to access files for include and render statements
+    /// </summary>
     public class CDAFileProvider : IFileProvider
     {
         private readonly PhysicalFileProvider _innerProvider;
