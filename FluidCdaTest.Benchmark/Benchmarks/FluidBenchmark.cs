@@ -25,7 +25,6 @@ namespace FluidCdaTest.Benchmark.Benchmarks
             _templateOptions = new TemplateOptions();
             CCDParser parser = new CCDParser();
 
-            parser.RegisterCustomTags();
             _templateOptions.Filters.RegisterCustomFilters();
 
             CDAFileProvider provider = new CDAFileProvider(BenchmarkConstants.TemplatesPath);

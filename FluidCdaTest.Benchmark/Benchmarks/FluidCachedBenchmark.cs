@@ -22,7 +22,6 @@ namespace FluidCdaTest.Benchmark.Benchmarks
 
         static FluidCachedBenchmark()
         {
-            _parser.RegisterCustomTags();
             _templateOptions.Filters.RegisterCustomFilters();
 
             CachedCDAFileProvider provider = new CachedCDAFileProvider(BenchmarkConstants.TemplatesPath);

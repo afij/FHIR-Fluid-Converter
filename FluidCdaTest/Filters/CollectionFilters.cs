@@ -64,7 +64,6 @@ namespace FluidCdaTest.Filters
 
                 // TODO: reuse a static parser
                 var parser = new CCDParser();
-                parser.RegisterCustomTags();
 
                 var templateFileSystem = context.Options.FileProvider;
                 var templateInfo = templateFileSystem.GetFileInfo($"{arguments.At(0).ToStringValue()}.liquid");

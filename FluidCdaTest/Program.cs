@@ -16,8 +16,6 @@ namespace FluidCdaTest
         static async Task Main()
         {
             var parser = new CCDParser();
-            parser.RegisterCustomTags();
-            parser.RegisterEvaluateTag();
 
             // Register filters and custom provider
             var options = new TemplateOptions();
