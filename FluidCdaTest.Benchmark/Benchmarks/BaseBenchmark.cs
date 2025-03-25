@@ -13,7 +13,8 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         static BaseBenchmark()
         {
             //var assembly = typeof(BaseBenchmark).Assembly;
-            TestContent = File.ReadAllText(@"C:\work\FluidCdaTest\FluidCdaTest\testModel.txt");
+            //TestContent = File.ReadAllText(@"C:\work\FluidCdaTest\data\SampleData\testModel.txt");
+            TestContent = File.ReadAllText(@"C:\work\FluidCdaTest\data\SampleData\CDA.ccda");
             //TestContent = File.ReadAllText(@"C:\work\FluidCdaTest\CurrentCDA-Test1g.txt");
 
             TestObject = Processors.PreProcessor.ParseToObject(TestContent);

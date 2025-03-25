@@ -1,6 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Fluid;
 using FluidCdaTest.Filters;
+using FluidCdaTest.Parsers;
 using FluidCdaTest.Providers;
 using FluidCdaTest.Utilities;
 using System.Collections.Generic;

@@ -3,22 +3,23 @@ using Fluid.Ast;
 using Fluid.Values;
 using FluidCdaTest.Filters;
 using FluidCdaTest.Models;
+using FluidCdaTest.Parsers;
 using Parlot.Fluent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using static Parlot.Fluent.Parsers;
 
-public static class EvaluateTag 
+public static class EvaluateTag
 {
-    internal static void RegisterEvaluateTag(this FluidParser parser)
+    internal static void RegisterEvaluateTag(this CCDParser parser)
     {
         Parser<EvaluateStruct> EvaluateParser = Terms.NonWhiteSpace().AndSkip(Terms.Text("using")).And(Terms.String(StringLiteralQuotes.Single))
-                .AndSkip(Terms.Text("obj:")).And(Terms.NonWhiteSpace())
-                .Then<EvaluateStruct>(v =>
-                {
-                    return new EvaluateStruct() { Parser = parser, Variable = v.Item1.ToString(), Template = v.Item2.ToString(), InputObjectString = v.Item3.ToString() };
-                });
+            .AndSkip(Terms.Text("obj:")).And(Terms.NonWhiteSpace())
+            .Then<EvaluateStruct>(v =>
+            {
+                return new EvaluateStruct() { Parser = parser, Variable = v.Item1.ToString(), Template = v.Item2.ToString(), InputObjectString = v.Item3.ToString() };
+            });
 
         parser.RegisterParserTag("evaluate", EvaluateParser, async (evaluateObj, w, e, c) =>
         {

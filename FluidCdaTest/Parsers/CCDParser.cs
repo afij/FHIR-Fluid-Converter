@@ -4,24 +4,25 @@ using Fluid.Values;
 using Parlot.Fluent;
 using static Parlot.Fluent.Parsers;
 
-namespace FluidCdaTest
+namespace FluidCdaTest.Parsers
 {
     public class CCDParser : FluidParser
     {
-        public Deferred<Expression> PrimaryParser => Primary;
+        //public Deferred<Expression> PrimaryParser => Primary;
 
         /// <summary>
         /// Register custom tags for CCD parsing
         /// </summary>
         public void RegisterCustomTags()
         {
-            this.RegisterIncludeTag();
+            RegisterIncludeTag();
             this.RegisterEvaluateTag();
         }
 
         /// <summary>
         /// Registers/Overrides default Fluid Include tag
         /// </summary>
+        /// Included directly on parser as it accesses protected variables
         public void RegisterIncludeTag()
         {
             // Have to register Include tag here due to most of the expressions being protected in FluidParser

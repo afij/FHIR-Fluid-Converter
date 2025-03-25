@@ -1,18 +1,19 @@
 ﻿using Fluid;
-using System.IO;
+using FluidCdaTest.Filters;
+using FluidCdaTest.Parsers;
+using FluidCdaTest.Processors;
+using FluidCdaTest.Providers;
+using FluidCdaTest.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
-using FluidCdaTest.Providers;
-using FluidCdaTest.Filters;
-using FluidCdaTest.Utilities;
-using FluidCdaTest.Processors;
 
 namespace FluidCdaTest
 {
     public class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             var parser = new CCDParser();
             parser.RegisterCustomTags();
@@ -27,7 +28,8 @@ namespace FluidCdaTest
             options.FileProvider = provider;
 
             // Load model from disk
-            var testModel  = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\FluidCdaTest\testModel.txt");
+            //var testModel  = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\FluidCdaTest\testModel.txt");
+            var testModel = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\data\SampleData\CDA.ccda");
             //var currentCdaTest1g = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\CurrentCDA-Test1g.txt");
 
 
@@ -52,7 +54,7 @@ namespace FluidCdaTest
             if (parser.TryParse(rootTemplate, out var template, out var errors))
             {
                 var result = await template.RenderAsync(context);
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
                 var mergedJsonString = PostProcessor.Process(result);
                 Console.WriteLine(mergedJsonString);
             }
