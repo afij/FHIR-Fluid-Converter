@@ -32,7 +32,7 @@ namespace FluidCdaTest.Parsers
 
             // Create TemplateOptions and register filters and custom provider
             _templateOptions = new TemplateOptions();
-            _templateOptions.Filters.RegisterCustomFilters();
+            _templateOptions.Filters.RegisterCustomFilters(this);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace FluidCdaTest.Parsers
 
             // Create TemplateOptions and register filters and custom provider
             _templateOptions = new TemplateOptions();
-            _templateOptions.Filters.RegisterCustomFilters();
+            _templateOptions.Filters.RegisterCustomFilters(this);
             if (options.UseCachedFileProvider)
             {
                 _fileProvider = new CachedCDAFileProvider(options.TemplateDirectoryPath);
@@ -143,7 +143,7 @@ namespace FluidCdaTest.Parsers
 
                 // Construct temp options with registered tags
                 var tempOptions = new TemplateOptions();
-                tempOptions.Filters.RegisterCustomFilters();
+                tempOptions.Filters.RegisterCustomFilters(this);
 
                 var output = template.Render(new TemplateContext(new Dictionary<string, object> { { "obj", valueFromExpression } }, tempOptions));
                 var assignmentStatement = new AssignStatement(evaluateObj.Variable, new LiteralExpression(new StringValue(output.Trim())));

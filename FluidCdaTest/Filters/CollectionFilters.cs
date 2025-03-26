@@ -12,8 +12,11 @@ namespace FluidCdaTest.Filters
 {
     public static class CollectionFilters
     {
-        public static void RegisterCollectionFilters(this FilterCollection filters)
+        private static CCDParser _parser;
+
+        public static void RegisterCollectionFilters(this FilterCollection filters, CCDParser parser)
         {
+            _parser = parser;
             filters.AddFilter("to_array", ToArray);
             filters.AddFilter("batch_render", BatchRender);
         }
@@ -62,9 +65,6 @@ namespace FluidCdaTest.Filters
             {
                 var inputArray = input as ArrayValue;
 
-                // TODO: reuse a static parser
-                var parser = new CCDParser();
-
                 var templateFileSystem = context.Options.FileProvider;
                 var templateInfo = templateFileSystem.GetFileInfo($"{arguments.At(0).ToStringValue()}.liquid");
                 string templateContent = null;
@@ -80,7 +80,7 @@ namespace FluidCdaTest.Filters
                     throw new Exception();
                 }
 
-                if (parser.TryParse(templateContent, out var template, out var errors))
+                if (_parser.TryParse(templateContent, out var template, out var errors))
                 {
                     StringBuilder batchOutputBuilder = new StringBuilder();
                     if (input is ArrayValue)
@@ -93,20 +93,17 @@ namespace FluidCdaTest.Filters
                             if (!string.IsNullOrEmpty(output))
                             {
                                 batchOutputBuilder.Append(output);
-
                             }
                         }
                     }
                     else
                     {
-                        
                         //var output = await template.RenderAsync(new TemplateContext(new Dictionary<string, object> { { arguments.At(1).ToStringValue(), input } }, context.Options));
                         context.SetValue(arguments.At(1).ToStringValue(), input);
                         var output = await template.RenderAsync(context);
                         if (!string.IsNullOrEmpty(output))
                         {
                             batchOutputBuilder.Append(output);
-
                         }
                     }
                     return new StringValue(batchOutputBuilder.ToString());
