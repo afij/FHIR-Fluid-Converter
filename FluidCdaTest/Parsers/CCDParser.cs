@@ -3,10 +3,15 @@ using Fluid.Ast;
 using Fluid.Values;
 using FluidCdaTest.Filters;
 using FluidCdaTest.Models;
+using FluidCdaTest.Processors;
+using FluidCdaTest.Providers;
+using FluidCdaTest.Utilities;
 using Parlot.Fluent;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using static Parlot.Fluent.Parsers;
 
 namespace FluidCdaTest.Parsers
@@ -14,12 +19,33 @@ namespace FluidCdaTest.Parsers
     // Tags are written here because they sometimes rely on protected FluidParser variables
     public class CCDParser : FluidParser
     {
+        private readonly TemplateOptions _templateOptions;
+        private readonly CDAFileProvider _fileProvider;
+
         /// <summary>
-        /// Create CCDParser. Automatically registers required liquid tags
+        /// Create CCDParser without a dedicated FileProvider. Automatically reigsters filters
         /// </summary>
         public CCDParser()
         {
             RegisterCustomTags();
+
+            // Create TemplateOptions and register filters and custom provider
+            _templateOptions = new TemplateOptions();
+            _templateOptions.Filters.RegisterCustomFilters();
+        }
+
+        /// <summary>
+        /// Create CCDParser with a dedicated FileProvider. Automatically reigsters filters
+        /// </summary>
+        public CCDParser(string templateDirectoryPath)
+        {
+            RegisterCustomTags();
+
+            // Create TemplateOptions and register filters and custom provider
+            _templateOptions = new TemplateOptions();
+            _templateOptions.Filters.RegisterCustomFilters();
+            _fileProvider = new CDAFileProvider(templateDirectoryPath);
+            _templateOptions.FileProvider = _fileProvider;
         }
 
         /// <summary>
@@ -44,7 +70,8 @@ namespace FluidCdaTest.Parsers
                 //{
                 //    return new AssignStatement(x.Item1, x.Item2);
                 //}))).Then(x => new IncludeStatement(this, x.Item1, null, null, null, x.Item2)),
-                Primary.And(Separated(Literals.Char(' ').Or(Literals.Char(',')), Identifier.AndSkip(Colon).And(Primary).Then(x => {
+                Primary.And(Separated(Literals.Char(' ').Or(Literals.Char(',')), Identifier.AndSkip(Colon).And(Primary).Then(x =>
+                {
                     return new AssignStatement(x.Item1, x.Item2);
                 }))).Then(x => new IncludeStatement(this, x.Item1, null, null, null, x.Item2)),
                 Primary.AndSkip(Terms.Text("with")).And(Primary).And(ZeroOrOne(Terms.Text("as").SkipAnd(Identifier))).Then(x => new IncludeStatement(this, x.Item1, with: x.Item2, alias: x.Item3)),
@@ -114,6 +141,48 @@ namespace FluidCdaTest.Parsers
                 await assignmentStatement.WriteToAsync(w, e, c);
                 return Completion.Normal;
             });
+        }
+
+        public async Task<IFluidTemplate> Parse()
+        {
+            // Load model from disk
+            //var testModel  = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\FluidCdaTest\testModel.txt");
+
+            var rootTemplate = await File.ReadAllTextAsync(@"C:\work\HAG-FHIR\HAG.FHIR.API\data\Templates\Ccda\CCD.liquid");
+            //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Test' test: 'testxd' test2: msg -%}";
+            //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Header' test: testval, test2: testval -%}";
+            //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Header', test: testval, test2: testval2, t3: t3 -%}";
+            //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Header' test: testval, test2: testval2, t3: t3 -%}";
+            //var rootTemplate = @"{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}
+            //value: {{ patientId }}";
+
+            // Parse the template
+            if (this.TryParse(rootTemplate, out var template, out var errors))
+            {
+                return template;
+            }
+            else
+            {
+                throw new Exception("Failed to parse template: " + string.Join(", ", errors));
+            }
+        }
+
+        public async Task<string> RenderAsync(IFluidTemplate template)
+        {
+            var testModel = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\data\SampleData\CDA.ccda");
+
+            // Process model into an object (fixes data etc) and add to a new context
+            var testObj = PreProcessor.ParseToObject(testModel);
+            var context = new TemplateContext(new Dictionary<string, object> { { "msg", testObj } }, _templateOptions);
+
+            // Preload ValueSet data as CodeMapping obj
+            var valueSetString = _fileProvider.ReadTemplateFile(@"ValueSet/ValueSet");
+            context.AmbientValues.Add(GeneralFilters.CODE_MAPPING_VALUE_NAME, TemplateUtility.ParseCodeMapping(valueSetString));
+
+            var result = await template.RenderAsync(context);
+            var mergedJsonString = PostProcessor.Process(result);
+
+            return mergedJsonString;
         }
     }
 }

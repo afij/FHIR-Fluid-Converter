@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace FluidCdaTest.Benchmark.Benchmarks
 {
@@ -9,29 +10,29 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         protected static object TestObject = null;
         protected static string TestRootTemplateContent = null;
 
-        [Params(@"CDA.ccda", @"testModel.txt")]
+        [Params("CDA.ccda", "testModel.txt")]
         public string InputPayloadFileName { get; set; }
 
         public string InputPayloadFilePath => BenchmarkConstants.SampleDataPath + InputPayloadFileName;
 
-        public string ParseAndRender(string inputFilePath)
+        public async Task<string> ParseAndRender(string inputFilePath)
         {
             TestContent = File.ReadAllText(inputFilePath);
             TestObject = Processors.PreProcessor.ParseToObject(TestContent);
             TestRootTemplateContent = File.ReadAllText(BenchmarkConstants.RootTemplatePath);
 
-            Parse();
-            return Render();
+            await ParseAsync();
+            return await RenderAsync();
         }
 
-        public abstract void Parse();
+        public abstract Task ParseAsync();
 
-        public abstract string Render();
+        public abstract Task<string> RenderAsync();
 
         [Benchmark]
-        public virtual string ExecuteBenchmark()
+        public virtual async Task<string> ExecuteBenchmark()
         {
-            return ParseAndRender(InputPayloadFilePath);
+            return await ParseAndRender(InputPayloadFilePath);
         }
 
     }

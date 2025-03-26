@@ -1,10 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Fluid;
-using FluidCdaTest.Filters;
 using FluidCdaTest.Parsers;
-using FluidCdaTest.Providers;
-using FluidCdaTest.Utilities;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FluidCdaTest.Benchmark.Benchmarks
 {
@@ -14,32 +11,17 @@ namespace FluidCdaTest.Benchmark.Benchmarks
     [MemoryDiagnoser]
     public class FluidCachedParserOnlyBenchmark : BaseBenchmark
     {
-        private static readonly TemplateOptions _templateOptions = new TemplateOptions();
-        private static readonly CCDParser _parser = new CCDParser();
-        private TemplateContext _templateContext;
+        private static readonly CCDParser _parser = new CCDParser(BenchmarkConstants.TemplatesPath);
         private IFluidTemplate _template;
 
-        static FluidCachedParserOnlyBenchmark()
+        public override async Task ParseAsync()
         {
-            _templateOptions.Filters.RegisterCustomFilters();
-
-            CDAFileProvider provider = new CDAFileProvider(BenchmarkConstants.TemplatesPath);
-            _templateOptions.FileProvider = provider;
+            _template = await _parser.Parse();
         }
 
-        public override void Parse()
+        public override async Task<string> RenderAsync()
         {
-            _parser.TryParse(TestRootTemplateContent, out _template);
-            _templateContext = new TemplateContext(new Dictionary<string, object> { { "msg", TestObject } }, _templateOptions);
-
-            // Preload ValueSet data as CodeMapping obj
-            var valueSetString = ((CDAFileProvider)_templateOptions.FileProvider).ReadTemplateFile(@"ValueSet/ValueSet");
-            _templateContext.AmbientValues.Add(GeneralFilters.CODE_MAPPING_VALUE_NAME, TemplateUtility.ParseCodeMapping(valueSetString));
-        }
-
-        public override string Render()
-        {
-            return _template.Render(_templateContext);
+            return await _parser.RenderAsync(_template);
         }
     }
 }

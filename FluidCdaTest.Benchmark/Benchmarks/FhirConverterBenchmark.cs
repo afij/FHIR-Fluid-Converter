@@ -1,6 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
+using System.Threading.Tasks;
 
 namespace FluidCdaTest.Benchmark.Benchmarks
 {
@@ -11,12 +12,13 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         {
         }
 
-        public override void Parse()
+        public override Task ParseAsync()
         {
             // Do nothing
+            return Task.CompletedTask;
         }
 
-        public override string Render()
+        public override Task<string> RenderAsync()
         {
             ConverterOptions _options = new ConverterOptions()
             {
@@ -26,7 +28,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
             };
 
             var convertedFhirString = ConverterLogicHandler.ConvertToString(_options);
-            return convertedFhirString;
+            return Task.FromResult(convertedFhirString);
         }
     }
 }

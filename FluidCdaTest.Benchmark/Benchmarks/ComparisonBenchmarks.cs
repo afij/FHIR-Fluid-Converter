@@ -6,7 +6,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
     [MemoryDiagnoser, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
     public class ComparisonBenchmarks
     {
-        [Params(@"CDA.ccda", @"testModel.txt")]
+        [Params("CDA.ccda", "testModel.txt")]
         public string InputPayloadFileName { get; set; }
 
         public string InputPayloadFilePath => BenchmarkConstants.SampleDataPath + InputPayloadFileName;

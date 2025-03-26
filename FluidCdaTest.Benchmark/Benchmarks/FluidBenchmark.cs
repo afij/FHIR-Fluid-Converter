@@ -7,6 +7,7 @@ using FluidCdaTest.Providers;
 using FluidCdaTest.Utilities;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FluidCdaTest.Benchmark.Benchmarks
 {
@@ -16,31 +17,17 @@ namespace FluidCdaTest.Benchmark.Benchmarks
     [MemoryDiagnoser]
     public class FluidBenchmark : BaseBenchmark
     {
-        private TemplateOptions _templateOptions;
-        private TemplateContext _templateContext;
+        private CCDParser _parser = new CCDParser(BenchmarkConstants.TemplatesPath);
         private IFluidTemplate _template;
 
-        public override void Parse()
+        public override async Task ParseAsync()
         {
-            _templateOptions = new TemplateOptions();
-            CCDParser parser = new CCDParser();
-
-            _templateOptions.Filters.RegisterCustomFilters();
-
-            CDAFileProvider provider = new CDAFileProvider(BenchmarkConstants.TemplatesPath);
-            _templateOptions.FileProvider = provider;
-
-            parser.TryParse(TestRootTemplateContent, out _template);
-            _templateContext = new TemplateContext(new Dictionary<string, object> { { "msg", TestObject } }, _templateOptions);
+            _template = await _parser.Parse();
         }
 
-        public override string Render()
+        public override async Task<string> RenderAsync()
         {
-            // Preload ValueSet data as CodeMapping obj
-            var valueSetString = ((CDAFileProvider)_templateOptions.FileProvider).ReadTemplateFile(@"ValueSet/ValueSet");
-            _templateContext.AmbientValues.Add(GeneralFilters.CODE_MAPPING_VALUE_NAME, TemplateUtility.ParseCodeMapping(valueSetString));
-
-            return _template.Render(_templateContext);
+            return await _parser.RenderAsync(_template);
         }
     }
 }
