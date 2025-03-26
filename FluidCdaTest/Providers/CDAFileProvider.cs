@@ -8,7 +8,7 @@ namespace FluidCdaTest.Providers
     /// <summary>
     /// Custom IFileProvider used to access files for include and render statements
     /// </summary>
-    public class CDAFileProvider : IFileProvider
+    public class CDAFileProvider : ICDAFileProvider
     {
         private readonly PhysicalFileProvider _innerProvider;
 
@@ -54,7 +54,7 @@ namespace FluidCdaTest.Providers
             }
         }
 
-        private string GetAbsoluteTemplatePath(string templateName)
+        public string GetAbsoluteTemplatePath(string templateName)
         {
             // Remove .liquid from end of path before routing logic
             if (templateName.EndsWith(".liquid"))

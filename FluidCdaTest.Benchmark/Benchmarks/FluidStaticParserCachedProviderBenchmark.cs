@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace FluidCdaTest.Benchmark.Benchmarks
 {
     /// <summary>
-    /// Recreates parser and template options each execution
+    /// Uses a static parser instance during repeated execution in addition to using the CachedCDAFileProvider
     /// </summary>
     [MemoryDiagnoser]
-    public class FluidBenchmark : BaseBenchmark
+    public class FluidStaticParserCachedProviderBenchmark : BaseBenchmark
     {
-        private readonly CCDParser _parser = new CCDParser(
+        private static readonly CCDParser _parser = new CCDParser(
             new CCDParserOptions()
             {
                 TemplateDirectoryPath = BenchmarkConstants.TemplatesPath,

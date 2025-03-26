@@ -10,7 +10,7 @@ namespace FluidCdaTest.Providers
     /// <summary>
     /// Custom IFileProvider that caches file content to avoid rereading the disk during execution. Used to access files for include and render statements
     /// </summary>
-    public class CachedCDAFileProvider : IFileProvider
+    public class CachedCDAFileProvider : ICDAFileProvider
     {
         private readonly PhysicalFileProvider _innerProvider;
         private readonly ConcurrentDictionary<string, CachedFileEntry> _cache;
@@ -105,7 +105,7 @@ namespace FluidCdaTest.Providers
             }
         }
 
-        private string GetAbsoluteTemplatePath(string templateName)
+        public string GetAbsoluteTemplatePath(string templateName)
         {
             // Remove .liquid from end of path before routing logic
             if (templateName.EndsWith(".liquid"))

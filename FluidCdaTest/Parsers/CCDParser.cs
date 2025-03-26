@@ -3,6 +3,7 @@ using Fluid.Ast;
 using Fluid.Values;
 using FluidCdaTest.Filters;
 using FluidCdaTest.Models;
+using FluidCdaTest.Parsers.Options;
 using FluidCdaTest.Processors;
 using FluidCdaTest.Providers;
 using FluidCdaTest.Utilities;
@@ -20,7 +21,7 @@ namespace FluidCdaTest.Parsers
     public class CCDParser : FluidParser
     {
         private readonly TemplateOptions _templateOptions;
-        private readonly CDAFileProvider _fileProvider;
+        private readonly ICDAFileProvider _fileProvider;
 
         /// <summary>
         /// Create CCDParser without a dedicated FileProvider. Automatically reigsters filters
@@ -37,14 +38,22 @@ namespace FluidCdaTest.Parsers
         /// <summary>
         /// Create CCDParser with a dedicated FileProvider. Automatically reigsters filters
         /// </summary>
-        public CCDParser(string templateDirectoryPath)
+        public CCDParser(CCDParserOptions options)
         {
             RegisterCustomTags();
 
             // Create TemplateOptions and register filters and custom provider
             _templateOptions = new TemplateOptions();
             _templateOptions.Filters.RegisterCustomFilters();
-            _fileProvider = new CDAFileProvider(templateDirectoryPath);
+            if (options.UseCachedFileProvider)
+            {
+                _fileProvider = new CachedCDAFileProvider(options.TemplateDirectoryPath);
+            }
+            else
+            {
+                _fileProvider = new CDAFileProvider(options.TemplateDirectoryPath);
+            }
+
             _templateOptions.FileProvider = _fileProvider;
         }
 
@@ -167,20 +176,18 @@ namespace FluidCdaTest.Parsers
             }
         }
 
-        public async Task<string> RenderAsync(IFluidTemplate template)
+        public async Task<string> RenderAsync(IFluidTemplate template, string inputCCDA)
         {
-            var testModel = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\data\SampleData\CDA.ccda");
-
             // Process model into an object (fixes data etc) and add to a new context
-            var testObj = PreProcessor.ParseToObject(testModel);
-            var context = new TemplateContext(new Dictionary<string, object> { { "msg", testObj } }, _templateOptions);
+            var preProcessedObject = PreProcessor.ParseToObject(inputCCDA);
+            var context = new TemplateContext(new Dictionary<string, object> { { "msg", preProcessedObject } }, _templateOptions);
 
             // Preload ValueSet data as CodeMapping obj
             var valueSetString = _fileProvider.ReadTemplateFile(@"ValueSet/ValueSet");
             context.AmbientValues.Add(GeneralFilters.CODE_MAPPING_VALUE_NAME, TemplateUtility.ParseCodeMapping(valueSetString));
 
-            var result = await template.RenderAsync(context);
-            var mergedJsonString = PostProcessor.Process(result);
+            var renderedString = await template.RenderAsync(context);
+            var mergedJsonString = PostProcessor.Process(renderedString);
 
             return mergedJsonString;
         }
