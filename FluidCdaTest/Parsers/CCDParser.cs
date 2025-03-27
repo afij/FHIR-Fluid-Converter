@@ -24,18 +24,7 @@ namespace FluidCdaTest.Parsers
         private readonly TemplateOptions _templateOptions;
         private readonly ICDAFileProvider _fileProvider;
         private string _rootTemplateContent = null;
-
-        /// <summary>
-        /// Create CCDParser without a dedicated FileProvider. Automatically reigsters filters
-        /// </summary>
-        public CCDParser()
-        {
-            RegisterCustomTags();
-
-            // Create TemplateOptions and register filters and custom provider
-            _templateOptions = new TemplateOptions();
-            _templateOptions.Filters.RegisterCustomFilters(this);
-        }
+        private CodeMapping _codeMapping;
 
         /// <summary>
         /// Create CCDParser with a dedicated FileProvider. Automatically reigsters filters
@@ -58,6 +47,8 @@ namespace FluidCdaTest.Parsers
             }
 
             _templateOptions.FileProvider = _fileProvider;
+
+            ParseCodeMapping();
         }
 
         /// <summary>
@@ -67,6 +58,16 @@ namespace FluidCdaTest.Parsers
         {
             RegisterIncludeTag();
             RegisterEvaluateTag();
+        }
+
+        /// <summary>
+        /// Parse ValueSet CodeMapping object and assign to instance variable
+        /// </summary>
+        private void ParseCodeMapping()
+        {
+            // Preload ValueSet data as CodeMapping obj
+            var valueSetString = _fileProvider.ReadTemplateFile(@"ValueSet/ValueSet");
+            _codeMapping = TemplateUtility.ParseCodeMapping(valueSetString);
         }
 
         /// <summary>
@@ -184,9 +185,7 @@ namespace FluidCdaTest.Parsers
             var preProcessedObject = PreProcessor.ParseToObject(inputCCDA);
             var context = new TemplateContext(new Dictionary<string, object> { { "msg", preProcessedObject } }, _templateOptions);
 
-            // Preload ValueSet data as CodeMapping obj
-            var valueSetString = _fileProvider.ReadTemplateFile(@"ValueSet/ValueSet");
-            context.AmbientValues.Add(GeneralFilters.CODE_MAPPING_VALUE_NAME, TemplateUtility.ParseCodeMapping(valueSetString));
+            context.AmbientValues.Add(GeneralFilters.CODE_MAPPING_VALUE_NAME, _codeMapping);
 
             var renderedString = await template.RenderAsync(context);
             var mergedJsonString = PostProcessor.Process(renderedString);
