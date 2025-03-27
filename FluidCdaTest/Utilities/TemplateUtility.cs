@@ -1,11 +1,16 @@
 ﻿using FluidCdaTest.Models;
-using Newtonsoft.Json;
 using System;
+using System.Text.Json;
 
 namespace FluidCdaTest.Utilities
 {
     public class TemplateUtility
     {
+        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         /// <summary>
         /// Deserialize string content into CodeMapping object
         /// </summary>
@@ -21,7 +26,7 @@ namespace FluidCdaTest.Utilities
 
             try
             {
-                var mapping = JsonConvert.DeserializeObject<CodeMapping>(content);
+                var mapping = JsonSerializer.Deserialize<CodeMapping>(content, _jsonOptions);
                 if (mapping?.Mapping == null)
                 {
                     throw new Exception();
@@ -31,7 +36,6 @@ namespace FluidCdaTest.Utilities
             }
             catch (JsonException ex)
             {
-                //throw new TemplateLoadException(FhirConverterErrorCode.InvalidCodeMapping, Resources.InvalidCodeMapping, ex);
                 throw ex;
             }
         }
