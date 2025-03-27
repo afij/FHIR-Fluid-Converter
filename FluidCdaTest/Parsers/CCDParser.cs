@@ -20,8 +20,10 @@ namespace FluidCdaTest.Parsers
     // Tags are written here because they sometimes rely on protected FluidParser variables
     public class CCDParser : FluidParser
     {
+        private readonly CCDParserOptions _options;
         private readonly TemplateOptions _templateOptions;
         private readonly ICDAFileProvider _fileProvider;
+        private string _rootTemplateContent = null;
 
         /// <summary>
         /// Create CCDParser without a dedicated FileProvider. Automatically reigsters filters
@@ -40,18 +42,19 @@ namespace FluidCdaTest.Parsers
         /// </summary>
         public CCDParser(CCDParserOptions options)
         {
+            _options = options;
             RegisterCustomTags();
 
             // Create TemplateOptions and register filters and custom provider
             _templateOptions = new TemplateOptions();
             _templateOptions.Filters.RegisterCustomFilters(this);
-            if (options.UseCachedFileProvider)
+            if (_options.UseCachedFileProvider)
             {
-                _fileProvider = new CachedCDAFileProvider(options.TemplateDirectoryPath);
+                _fileProvider = new CachedCDAFileProvider(_options.TemplateDirectoryPath);
             }
             else
             {
-                _fileProvider = new CDAFileProvider(options.TemplateDirectoryPath);
+                _fileProvider = new CDAFileProvider(_options.TemplateDirectoryPath);
             }
 
             _templateOptions.FileProvider = _fileProvider;
@@ -156,8 +159,7 @@ namespace FluidCdaTest.Parsers
         {
             // Load model from disk
             //var testModel  = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\FluidCdaTest\testModel.txt");
-
-            var rootTemplate = await File.ReadAllTextAsync(@"C:\work\HAG-FHIR\HAG.FHIR.API\data\Templates\Ccda\CCD.liquid");
+            _rootTemplateContent ??= _fileProvider.ReadTemplateFile(_options.RootTemplate);
             //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Test' test: 'testxd' test2: msg -%}";
             //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Header' test: testval, test2: testval -%}";
             //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Header', test: testval, test2: testval2, t3: t3 -%}";
@@ -166,7 +168,7 @@ namespace FluidCdaTest.Parsers
             //value: {{ patientId }}";
 
             // Parse the template
-            if (this.TryParse(rootTemplate, out var template, out var errors))
+            if (this.TryParse(_rootTemplateContent, out var template, out var errors))
             {
                 return template;
             }

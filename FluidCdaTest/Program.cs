@@ -13,7 +13,14 @@ namespace FluidCdaTest
 
         static async Task Main()
         {
-            var parser = new CCDParser(new CCDParserOptions() { TemplateDirectoryPath = TemplateDirectoryPath, UseCachedFileProvider = true });
+            var parser = new CCDParser(
+                new CCDParserOptions()
+                { 
+                    TemplateDirectoryPath = TemplateDirectoryPath,
+                    RootTemplate = "CCD.liquid",
+                    UseCachedFileProvider = true
+                }
+            );
             IFluidTemplate template = await parser.Parse();
 
             //var inputCCDA = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\data\SampleData\CDA.ccda");

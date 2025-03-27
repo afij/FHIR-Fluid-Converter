@@ -21,6 +21,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
                 new CCDParserOptions()
                 {
                     TemplateDirectoryPath = BenchmarkConstants.TemplatesPath,
+                    RootTemplate = "CCD.liquid",
                     UseCachedFileProvider = true
                 }
             );

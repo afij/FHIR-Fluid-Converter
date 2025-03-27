@@ -7,30 +7,30 @@ namespace FluidCdaTest.Models
 {
     public class CachedFileInfo : IFileInfo
     {
-        private readonly string _filePath;
+        private readonly FileInfo _fileInfo;
         private readonly CachedCDAFileProvider _provider;
 
-        public CachedFileInfo(string filePath, CachedCDAFileProvider provider)
+        public CachedFileInfo(FileInfo fileInfo, CachedCDAFileProvider provider)
         {
-            _filePath = filePath;
+            _fileInfo = fileInfo;
             _provider = provider;
         }
 
-        public bool Exists => File.Exists(_filePath);
+        public bool Exists => _fileInfo.Exists;
 
-        public long Length => new FileInfo(_filePath).Length;
+        public long Length => _fileInfo.Length;
 
-        public string PhysicalPath => _filePath;
+        public string PhysicalPath => _fileInfo.FullName;
 
-        public string Name => Path.GetFileName(_filePath);
+        public string Name => _fileInfo.Name;
 
-        public DateTimeOffset LastModified => File.GetLastWriteTimeUtc(_filePath);
+        public DateTimeOffset LastModified => _fileInfo.LastWriteTimeUtc;
 
         public bool IsDirectory => false;
 
         public Stream CreateReadStream()
         {
-            var content = _provider.GetFileContent(_filePath);
+            var content = _provider.GetFileContent(_fileInfo);
             return new MemoryStream(content);
         }
     }

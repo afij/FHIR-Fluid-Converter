@@ -12,6 +12,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
 
         public string InputPayloadFilePath => BenchmarkConstants.SampleDataPath + InputPayloadFileName;
 
+        private static FluidBenchmark _fluidBenchmark;
         private static FluidStaticParserBenchmark _staticParserBenchmark;
         private static FluidStaticParserCachedProviderBenchmark _staticCachedParserBenchmark;
         private readonly FhirConverterBenchmark _fhirConverterBenchmark = new FhirConverterBenchmark();
@@ -19,6 +20,10 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         [GlobalSetup]
         public void GlobalSetup()
         {
+            _fluidBenchmark = new FluidBenchmark();
+            _fluidBenchmark.InputPayloadFileName = InputPayloadFileName;
+            _fluidBenchmark.GlobalSetup();
+
             _staticParserBenchmark = new FluidStaticParserBenchmark();
             _staticParserBenchmark.InputPayloadFileName = InputPayloadFileName;
             _staticParserBenchmark.GlobalSetup();
@@ -29,9 +34,9 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         }
 
         [Benchmark, BenchmarkCategory("ParseAndRender")]
-        public object Fluid_Parse_Static_Cached()
+        public object Fluid_Parse()
         {
-            return _staticCachedParserBenchmark.ParseAndRender(InputPayloadFilePath);
+            return _fluidBenchmark.ParseAndRender(InputPayloadFilePath);
         }
 
         [Benchmark, BenchmarkCategory("ParseAndRender")]
@@ -41,12 +46,9 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         }
 
         [Benchmark, BenchmarkCategory("ParseAndRender")]
-        public object Fluid_Parse()
+        public object Fluid_Parse_Static_Cached()
         {
-            FluidBenchmark fluidBenchmark = new FluidBenchmark();
-            fluidBenchmark.InputPayloadFileName = InputPayloadFileName;
-            fluidBenchmark.GlobalSetup();
-            return fluidBenchmark.ParseAndRender(InputPayloadFilePath);
+            return _staticCachedParserBenchmark.ParseAndRender(InputPayloadFilePath);
         }
 
         [Benchmark(Baseline = true), BenchmarkCategory("ParseAndRender")]

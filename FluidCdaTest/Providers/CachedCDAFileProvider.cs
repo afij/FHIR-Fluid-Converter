@@ -34,7 +34,8 @@ namespace FluidCdaTest.Providers
             }
             else
             {
-                if (!File.Exists(filePath))
+                var fileInfo = new FileInfo(filePath);
+                if (!fileInfo.Exists)
                 {
                     var notFoundInfo = new NotFoundFileInfo(subpath);
                     _cache[filePath] = new CachedFileEntry
@@ -44,14 +45,14 @@ namespace FluidCdaTest.Providers
                     return notFoundInfo;
                 }
 
-                var fileInfo = new CachedFileInfo(filePath, this);
+                var cachedFileInfo = new CachedFileInfo(fileInfo, this);
                 var content = File.ReadAllBytes(filePath);
                 _cache[filePath] = new CachedFileEntry
                 {
-                    FileInfo = fileInfo,
+                    FileInfo = cachedFileInfo,
                     Content = content
                 };
-                return fileInfo;
+                return cachedFileInfo;
             }
         }
 
@@ -65,19 +66,19 @@ namespace FluidCdaTest.Providers
             return _innerProvider.Watch(filter);
         }
 
-        public byte[] GetFileContent(string filePath)
+        public byte[] GetFileContent(FileInfo fileInfo)
         {
-            if (_cache.TryGetValue(filePath, out CachedFileEntry entry))
+            if (_cache.TryGetValue(fileInfo.FullName, out CachedFileEntry entry))
             {
                 return entry.Content;
             }
             else
             {
-                var content = File.ReadAllBytes(filePath);
-                var fileInfo = new CachedFileInfo(filePath, this);
-                _cache[filePath] = new CachedFileEntry
+                var content = File.ReadAllBytes(fileInfo.FullName);
+                var cachedFileInfo = new CachedFileInfo(fileInfo, this);
+                _cache[fileInfo.FullName] = new CachedFileEntry
                 {
-                    FileInfo = fileInfo,
+                    FileInfo = cachedFileInfo,
                     Content = content
                 };
                 return content;
