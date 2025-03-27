@@ -8,7 +8,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
     {
         protected static string TestContent = null;
 
-        [Params("CDA.ccda", "testModel.txt")]
+        [Params("CDA.ccda", "LargeCDA.ccda")]
         public string InputPayloadFileName { get; set; }
 
         public string InputPayloadFilePath => BenchmarkConstants.SampleDataPath + InputPayloadFileName;
