@@ -13,10 +13,9 @@ namespace FluidCdaTest.Benchmark.Benchmarks
             // No setup required
         }
 
-        public override Task ParseAsync()
+        public override void Parse()
         {
             // Do nothing
-            return Task.CompletedTask;
         }
 
         public override Task<string> RenderAsync()

@@ -21,7 +21,7 @@ namespace FluidCdaTest
                     UseCachedFileProvider = true
                 }
             );
-            IFluidTemplate template = await parser.Parse();
+            IFluidTemplate template = parser.Parse();
 
             //var inputCCDA = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\data\SampleData\CDA.ccda");
             var inputCCDA = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\data\SampleData\LargeCDA.ccda");

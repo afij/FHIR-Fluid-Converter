@@ -25,11 +25,11 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         public async Task<string> ParseAndRender(string inputFilePath)
         {
             InputPayloadFileName = inputFilePath;
-            await ParseAsync();
+            Parse();
             return await RenderAsync();
         }
 
-        public abstract Task ParseAsync();
+        public abstract void Parse();
 
         public abstract Task<string> RenderAsync();
 

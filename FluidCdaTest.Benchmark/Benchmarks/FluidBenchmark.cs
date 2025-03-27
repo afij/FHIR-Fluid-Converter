@@ -20,7 +20,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
             // No setup required
         }
 
-        public override async Task ParseAsync()
+        public override void Parse()
         {
             _parser = new CCDParser(
                 new CCDParserOptions()
@@ -30,7 +30,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
                     UseCachedFileProvider = true
                 }
             );
-            _template = await _parser.Parse();
+            _template = _parser.Parse();
         }
 
         public override async Task<string> RenderAsync()

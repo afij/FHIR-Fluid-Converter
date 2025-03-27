@@ -27,9 +27,9 @@ namespace FluidCdaTest.Benchmark.Benchmarks
             );
         }
 
-        public override async Task ParseAsync()
+        public override void Parse()
         {
-            _template = await _parser.Parse();
+            _template = _parser.Parse();
         }
 
         public override async Task<string> RenderAsync()

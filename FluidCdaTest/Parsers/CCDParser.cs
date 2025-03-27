@@ -156,7 +156,7 @@ namespace FluidCdaTest.Parsers
             });
         }
 
-        public async Task<IFluidTemplate> Parse()
+        public IFluidTemplate Parse()
         {
             // Load model from disk
             //var testModel  = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\FluidCdaTest\testModel.txt");
