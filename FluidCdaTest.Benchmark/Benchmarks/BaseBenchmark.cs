@@ -13,10 +13,18 @@ namespace FluidCdaTest.Benchmark.Benchmarks
 
         public string InputPayloadFilePath => BenchmarkConstants.SampleDataPath + InputPayloadFileName;
 
+        [GlobalSetup]
+        public void GlobalSetup()
+        {
+            TestContent = File.ReadAllText(InputPayloadFilePath);
+            SetupBenchmark();
+        }
+
+        public abstract void SetupBenchmark();
+
         public async Task<string> ParseAndRender(string inputFilePath)
         {
-            TestContent = File.ReadAllText(inputFilePath);
-
+            InputPayloadFileName = inputFilePath;
             await ParseAsync();
             return await RenderAsync();
         }

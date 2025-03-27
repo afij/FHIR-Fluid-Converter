@@ -12,27 +12,41 @@ namespace FluidCdaTest.Benchmark.Benchmarks
 
         public string InputPayloadFilePath => BenchmarkConstants.SampleDataPath + InputPayloadFileName;
 
-        private readonly FluidStaticParserCachedProviderBenchmark _staticCachedParserBenchmark = new FluidStaticParserCachedProviderBenchmark();
-        private readonly FluidStaticParserBenchmark _staticParserBenchmark = new FluidStaticParserBenchmark();
-        private readonly FluidBenchmark _fluidBenchmark = new FluidBenchmark();
+        private static FluidStaticParserBenchmark _staticParserBenchmark;
+        private static FluidStaticParserCachedProviderBenchmark _staticCachedParserBenchmark;
         private readonly FhirConverterBenchmark _fhirConverterBenchmark = new FhirConverterBenchmark();
 
+        [GlobalSetup]
+        public void GlobalSetup()
+        {
+            _staticParserBenchmark = new FluidStaticParserBenchmark();
+            _staticParserBenchmark.InputPayloadFileName = InputPayloadFileName;
+            _staticParserBenchmark.GlobalSetup();
+
+            _staticCachedParserBenchmark = new FluidStaticParserCachedProviderBenchmark();
+            _staticCachedParserBenchmark.InputPayloadFileName = InputPayloadFileName;
+            _staticCachedParserBenchmark.GlobalSetup();
+        }
+
         [Benchmark, BenchmarkCategory("ParseAndRender")]
-        public object Fluid_Parse_Cache()
+        public object Fluid_Parse_Static_Cached()
         {
             return _staticCachedParserBenchmark.ParseAndRender(InputPayloadFilePath);
         }
 
         [Benchmark, BenchmarkCategory("ParseAndRender")]
-        public object Fluid_Parse_PartialCache()
+        public object Fluid_Parse_Static()
         {
             return _staticParserBenchmark.ParseAndRender(InputPayloadFilePath);
         }
 
         [Benchmark, BenchmarkCategory("ParseAndRender")]
-        public object Fluid_Parse_NoCache()
+        public object Fluid_Parse()
         {
-            return _fluidBenchmark.ParseAndRender(InputPayloadFilePath);
+            FluidBenchmark fluidBenchmark = new FluidBenchmark();
+            fluidBenchmark.InputPayloadFileName = InputPayloadFileName;
+            fluidBenchmark.GlobalSetup();
+            return fluidBenchmark.ParseAndRender(InputPayloadFilePath);
         }
 
         [Benchmark(Baseline = true), BenchmarkCategory("ParseAndRender")]

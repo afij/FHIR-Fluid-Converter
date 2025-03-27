@@ -8,8 +8,9 @@ namespace FluidCdaTest.Benchmark.Benchmarks
     [MemoryDiagnoser]
     public class FhirConverterBenchmark : BaseBenchmark
     {
-        public FhirConverterBenchmark()
+        public override void SetupBenchmark()
         {
+            // No setup required
         }
 
         public override Task ParseAsync()

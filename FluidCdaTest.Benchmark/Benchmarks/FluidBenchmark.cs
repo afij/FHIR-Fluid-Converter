@@ -21,6 +21,11 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         );
         private IFluidTemplate _template;
 
+        public override void SetupBenchmark()
+        {
+            // No setup required
+        }
+
         public override async Task ParseAsync()
         {
             _template = await _parser.Parse();

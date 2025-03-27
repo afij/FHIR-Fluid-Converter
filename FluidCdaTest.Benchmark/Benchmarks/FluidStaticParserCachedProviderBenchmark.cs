@@ -12,14 +12,19 @@ namespace FluidCdaTest.Benchmark.Benchmarks
     [MemoryDiagnoser]
     public class FluidStaticParserCachedProviderBenchmark : BaseBenchmark
     {
-        private static readonly CCDParser _parser = new CCDParser(
-            new CCDParserOptions()
-            {
-                TemplateDirectoryPath = BenchmarkConstants.TemplatesPath,
-                UseCachedFileProvider = true
-            }
-        );
+        private static CCDParser _parser;
         private IFluidTemplate _template;
+
+        public override void SetupBenchmark()
+        {
+            _parser = new CCDParser(
+                new CCDParserOptions()
+                {
+                    TemplateDirectoryPath = BenchmarkConstants.TemplatesPath,
+                    UseCachedFileProvider = true
+                }
+            );
+        }
 
         public override async Task ParseAsync()
         {
