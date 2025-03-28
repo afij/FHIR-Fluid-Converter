@@ -21,7 +21,7 @@ namespace FluidCdaTest.Processors
         {
             if (string.IsNullOrWhiteSpace(document))
             {
-                throw new ArgumentNullException("Input string cannot be null or whitespace");
+                throw new ArgumentNullException(nameof(document));
             }
 
             try
@@ -55,9 +55,9 @@ namespace FluidCdaTest.Processors
 
                 return dataDictionary;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 

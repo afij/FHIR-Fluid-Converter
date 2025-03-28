@@ -100,9 +100,9 @@ namespace FluidCdaTest.Providers
                 }
                 return templateContent;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -113,7 +113,7 @@ namespace FluidCdaTest.Providers
             {
                 templateName = templateName.Substring(0, templateName.LastIndexOf(".liquid"));
             }
-            var result = _innerProvider.Root;
+            //var result = _innerProvider.Root;
             var pathSegments = templateName.Split(Path.AltDirectorySeparatorChar);
 
             // Root templates

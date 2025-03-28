@@ -126,9 +126,9 @@ namespace FluidCdaTest.Processors
                     obj["entry"] = mergedEntity;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
             return obj;
         }

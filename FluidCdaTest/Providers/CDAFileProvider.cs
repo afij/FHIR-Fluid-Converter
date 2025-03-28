@@ -48,9 +48,9 @@ namespace FluidCdaTest.Providers
                 }
                 return templateContent;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 

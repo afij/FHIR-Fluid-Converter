@@ -29,10 +29,10 @@ namespace FluidCdaTest.Utilities
 
                 return mapping;
             }
-            catch (JsonException ex)
+            catch (JsonException)
             {
                 //throw new TemplateLoadException(FhirConverterErrorCode.InvalidCodeMapping, Resources.InvalidCodeMapping, ex);
-                throw ex;
+                throw;
             }
         }
     }
