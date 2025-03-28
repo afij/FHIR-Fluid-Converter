@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# IDE0290: Use primary constructor
+csharp_style_prefer_primary_constructors = false
+
+# IDE0057: Use range operator
+csharp_style_prefer_range_operator = false
+
+# IDE0305: Simplify collection initialization
+dotnet_style_prefer_collection_expression = never
