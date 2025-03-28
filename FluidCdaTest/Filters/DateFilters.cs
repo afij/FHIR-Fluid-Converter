@@ -28,7 +28,7 @@ namespace FluidCdaTest.Filters
         {
             var timeZoneHandling = "local";
             var argument1 = arguments.At(0);
-            if (argument1 != null && !(argument1 is NilValue))
+            if (argument1 != null && argument1 is not NilValue)
             {
                 timeZoneHandling = arguments.At(0).ToStringValue();
             }
@@ -67,7 +67,7 @@ namespace FluidCdaTest.Filters
         {
             var timeZoneHandling = "preserve";
             var argument1 = arguments.At(0);
-            if (argument1 != null && !(argument1 is NilValue))
+            if (argument1 != null && argument1 is not NilValue)
             {
                 timeZoneHandling = arguments.At(0).ToStringValue();
             }
@@ -106,7 +106,7 @@ namespace FluidCdaTest.Filters
         {
             string format = "yyyy-MM-ddTHH:mm:ss.FFFZ";
             var argument1 = arguments.At(0);
-            if (argument1 != null && !(argument1 is NilValue))
+            if (argument1 != null && argument1 is not NilValue)
             {
                 format = arguments.At(0).ToStringValue();
             }

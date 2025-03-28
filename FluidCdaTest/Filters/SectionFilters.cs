@@ -1,18 +1,16 @@
-﻿using Fluid.Values;
-using Fluid;
+﻿using Fluid;
+using Fluid.Ast;
+using Fluid.Values;
+using FluidCdaTest.CustomRegex;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
 using System.Linq;
-using Fluid.Ast;
+using System.Threading.Tasks;
 
 namespace FluidCdaTest.Filters
 {
-    public static class SectionFilters
+    public static partial class SectionFilters
     {
-        private static readonly Regex NormalizeSectionNameRegex = new Regex("[^A-Za-z0-9]");
-
         public static void RegisterSectionFilters(this FilterCollection filters)
         {
             filters.AddFilter("get_first_ccda_sections", GetFirstCcdaSections);
@@ -125,15 +123,15 @@ namespace FluidCdaTest.Filters
                 foreach (var component in components.Enumerate(context))
                 {
                     var testCompDict = component as DictionaryValue;
-                    var testSectionDict = await testCompDict.GetValueAsync("section", context) as DictionaryValue;
-                    if (testSectionDict != null)
+                    if (await testCompDict.GetValueAsync("section", context) is DictionaryValue testSectionDict)
                     {
                         var testTemplateIdDict = await testSectionDict.GetValueAsync("templateId", context);
                         var testEnum = testTemplateIdDict.Enumerate(context);
                         foreach (var testTemplateId in testEnum)
                         {
                             var testStringValue = await testTemplateId.GetValueAsync("root", context);
-                            if (testStringValue.ToStringValue().Contains(templateId, StringComparison.InvariantCultureIgnoreCase)) {
+                            if (testStringValue.ToStringValue().Contains(templateId, StringComparison.InvariantCultureIgnoreCase))
+                            {
                                 result[NormalizeSectionName(templateId)] = testSectionDict;
                             }
                         }
@@ -143,7 +141,7 @@ namespace FluidCdaTest.Filters
                                 await component.GetValueAsync("section", context) is DictionaryValue sectionDict &&
                                 await sectionDict.GetValueAsync("templateId", context) is DictionaryValue templateIdDict &&
                                 await templateIdDict.GetValueAsync("root", context) is StringValue stringValue &&
-                                //StringFilters.ToJsonString(stringValue.ToStringValue()).Contains(templateId, StringComparison.InvariantCultureIgnoreCase)
+                            //StringFilters.ToJsonString(stringValue.ToStringValue()).Contains(templateId, StringComparison.InvariantCultureIgnoreCase)
                             stringValue.ToStringValue().Contains(templateId, StringComparison.InvariantCultureIgnoreCase))
                     {
                         result[NormalizeSectionName(templateId)] = sectionDict;
@@ -190,7 +188,7 @@ namespace FluidCdaTest.Filters
 
         private static string NormalizeSectionName(string input)
         {
-            return NormalizeSectionNameRegex.Replace(input, "_");
+            return CCDRegex.NormalizeSectionNameRegex().Replace(input, "_");
         }
     }
 }

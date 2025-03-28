@@ -20,7 +20,7 @@ namespace FluidCdaTest.Benchmark.Benchmarks
 
         public override Task<string> RenderAsync()
         {
-            ConverterOptions _options = new ConverterOptions()
+            ConverterOptions _options = new()
             {
                 InputDataContent = TestContent,
                 TemplateDirectory = BenchmarkConstants.DevTemplatesPath,

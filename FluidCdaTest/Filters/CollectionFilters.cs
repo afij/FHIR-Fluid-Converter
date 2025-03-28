@@ -70,10 +70,8 @@ namespace FluidCdaTest.Filters
                 string templateContent = null;
                 if (templateInfo.Exists)
                 {
-                    using (StreamReader reader = new StreamReader(templateInfo.CreateReadStream()))
-                    {
-                        templateContent = reader.ReadToEnd();
-                    }
+                    using StreamReader reader = new(templateInfo.CreateReadStream());
+                    templateContent = reader.ReadToEnd();
                 }
                 if (string.IsNullOrEmpty(templateContent))
                 {
@@ -82,7 +80,7 @@ namespace FluidCdaTest.Filters
 
                 if (_parser.TryParse(templateContent, out var template, out var errors))
                 {
-                    StringBuilder batchOutputBuilder = new StringBuilder();
+                    StringBuilder batchOutputBuilder = new();
                     if (input is ArrayValue)
                     {
                         foreach (var value in input.Enumerate(context))

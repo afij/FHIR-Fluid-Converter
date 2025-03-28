@@ -41,10 +41,8 @@ namespace FluidCdaTest.Providers
                 string templateContent = null;
                 if (fileInfo.Exists)
                 {
-                    using (StreamReader reader = new StreamReader(fileInfo.CreateReadStream()))
-                    {
-                        templateContent = reader.ReadToEnd();
-                    }
+                    using StreamReader reader = new(fileInfo.CreateReadStream());
+                    templateContent = reader.ReadToEnd();
                 }
                 return templateContent;
             }
@@ -61,7 +59,7 @@ namespace FluidCdaTest.Providers
             {
                 templateName = templateName.Substring(0, templateName.LastIndexOf(".liquid"));
             }
-            var result = _innerProvider.Root;
+            //var result = _innerProvider.Root;
             var pathSegments = templateName.Split(Path.AltDirectorySeparatorChar);
 
             // Root templates

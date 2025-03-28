@@ -55,7 +55,7 @@ namespace FluidCdaTest.Converters
 
         private List<object> ReadArray(JsonReader reader)
         {
-            List<object> list = new List<object>();
+            List<object> list = new();
 
             while (reader.Read())
             {

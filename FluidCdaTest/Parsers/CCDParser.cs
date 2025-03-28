@@ -124,7 +124,7 @@ namespace FluidCdaTest.Parsers
                 }
 
                 string templateContent = null;
-                using (StreamReader reader = new StreamReader(templateInfo.CreateReadStream()))
+                using (StreamReader reader = new(templateInfo.CreateReadStream()))
                 {
                     templateContent = await reader.ReadToEndAsync();
                 }

@@ -14,21 +14,27 @@ namespace FluidCdaTest.Benchmark.Benchmarks
         private static FluidBenchmark _fluidBenchmark;
         private static FluidStaticParserBenchmark _staticParserBenchmark;
         private static FluidStaticParserCachedProviderBenchmark _staticCachedParserBenchmark;
-        private readonly FhirConverterBenchmark _fhirConverterBenchmark = new FhirConverterBenchmark();
+        private readonly FhirConverterBenchmark _fhirConverterBenchmark = new();
 
         [GlobalSetup]
         public void GlobalSetup()
         {
-            _fluidBenchmark = new FluidBenchmark();
-            _fluidBenchmark.InputPayloadFileName = InputPayloadFileName;
+            _fluidBenchmark = new FluidBenchmark
+            {
+                InputPayloadFileName = InputPayloadFileName
+            };
             _fluidBenchmark.GlobalSetup();
 
-            _staticParserBenchmark = new FluidStaticParserBenchmark();
-            _staticParserBenchmark.InputPayloadFileName = InputPayloadFileName;
+            _staticParserBenchmark = new FluidStaticParserBenchmark
+            {
+                InputPayloadFileName = InputPayloadFileName
+            };
             _staticParserBenchmark.GlobalSetup();
 
-            _staticCachedParserBenchmark = new FluidStaticParserCachedProviderBenchmark();
-            _staticCachedParserBenchmark.InputPayloadFileName = InputPayloadFileName;
+            _staticCachedParserBenchmark = new FluidStaticParserCachedProviderBenchmark
+            {
+                InputPayloadFileName = InputPayloadFileName
+            };
             _staticCachedParserBenchmark.GlobalSetup();
         }
 
