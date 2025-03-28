@@ -67,8 +67,7 @@ namespace FluidCdaTest.Filters
             }
 
             var bytes = Encoding.UTF8.GetBytes(input.ToStringValue());
-            var algorithm = SHA256.Create();
-            var hash = algorithm.ComputeHash(bytes);
+            var hash = SHA256.HashData(bytes);
             var guid = new byte[16];
             Array.Copy(hash, 0, guid, 0, 16);
             var computedUUID = new Guid(guid).ToString();

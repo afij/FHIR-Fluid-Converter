@@ -1,10 +1,9 @@
 ﻿using FluidCdaTest.Converters;
+using FluidCdaTest.CustomRegex;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace FluidCdaTest.Processors
@@ -51,7 +50,7 @@ namespace FluidCdaTest.Processors
                                      new Dictionary<string, object>();
 
                 // Remove line breaks in original data
-                dataDictionary["_originalData"] = Regex.Replace(originalData, @"\r\n?|\n", string.Empty);
+                dataDictionary["_originalData"] = CCDRegex.InvalidLineBreakRegex().Replace(originalData, string.Empty);
 
                 return dataDictionary;
             }

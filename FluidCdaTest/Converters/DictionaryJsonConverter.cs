@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using FluidCdaTest.CustomRegex;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace FluidCdaTest.Converters
 {
@@ -39,7 +39,7 @@ namespace FluidCdaTest.Converters
                 case JsonToken.String:
                     // Remove line breaks to avoid invalid line breaks in json value
                     // A line break is a normal character in XML but invalid in JSON
-                    return Regex.Replace(reader.Value.ToString(), @"\r\n?|\n", string.Empty);
+                    return CCDRegex.InvalidLineBreakRegex().Replace(reader.Value.ToString(), string.Empty);
                 case JsonToken.Integer:
                 case JsonToken.Float:
                 case JsonToken.Boolean:
@@ -53,9 +53,9 @@ namespace FluidCdaTest.Converters
             }
         }
 
-        private object ReadArray(JsonReader reader)
+        private List<object> ReadArray(JsonReader reader)
         {
-            IList<object> list = new List<object>();
+            List<object> list = new List<object>();
 
             while (reader.Read())
             {
@@ -75,7 +75,7 @@ namespace FluidCdaTest.Converters
             throw new Exception();
         }
 
-        private object ReadObject(JsonReader reader)
+        private Dictionary<string, object> ReadObject(JsonReader reader)
         {
             var obj = new Dictionary<string, object>();
 
@@ -92,7 +92,7 @@ namespace FluidCdaTest.Converters
                         }
 
                         // Remove "@" if it is attribute
-                        if (propertyName.StartsWith("@"))
+                        if (propertyName.StartsWith('@'))
                         {
                             propertyName = propertyName[1..];
                         }

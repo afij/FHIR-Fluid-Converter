@@ -111,9 +111,8 @@ namespace FluidCdaTest.Processors
                     foreach (var entry in entries)
                     {
                         var resourceKey = GetKey(entry);
-                        if (resourceKeyToIndexMap.ContainsKey(resourceKey))
+                        if (resourceKeyToIndexMap.TryGetValue(resourceKey, out int index))
                         {
-                            var index = resourceKeyToIndexMap[resourceKey];
                             mergedEntity[index] = Merge((JObject)mergedEntity[index], (JObject)entry);
                         }
                         else
