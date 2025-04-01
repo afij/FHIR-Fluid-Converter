@@ -2,7 +2,7 @@
 using Fhir.Fluid.Converter.Parsers;
 using Fhir.Fluid.Converter.Parsers.Options;
 
-String TemplateDirectoryPath = @"C:\work\HAG-FHIR\HAG.FHIR.API\data\Templates\Ccda";
+var TemplateDirectoryPath = $"{AppDomain.CurrentDomain.BaseDirectory}/Templates/Ccda";
 
 var parser = new CCDParser(
     new CCDParserOptions()
@@ -13,7 +13,7 @@ var parser = new CCDParser(
     }
 );
 
-var inputCCDA = File.ReadAllText(@"C:\work\FHIR-Fluid-Converter\data\SampleData\LargeCDA.ccda");
+var inputCCDA = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/SampleData/CDA.ccda");
 
 string renderedString = await parser.ParseAndRenderAsync(inputCCDA);
 

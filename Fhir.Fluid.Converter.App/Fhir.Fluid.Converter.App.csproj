@@ -11,4 +11,10 @@
     <ProjectReference Include="..\Fhir.Fluid.Converter\Fhir.Fluid.Converter.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\data\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -23,7 +23,7 @@ namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
             ConverterOptions _options = new()
             {
                 InputDataContent = TestContent,
-                TemplateDirectory = BenchmarkConstants.DevTemplatesPath,
+                TemplateDirectory = BenchmarkConstants.TemplatesPath,
                 RootTemplate = "CCD",
             };
 

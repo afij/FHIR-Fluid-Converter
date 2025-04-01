@@ -1,10 +1,13 @@
-﻿namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
+﻿using System;
+
+namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
 {
     public static class BenchmarkConstants
     {
-        public const string SampleDataPath = @"C:\work\FHIR-Fluid-Converter\data\SampleData\";
-        public const string DevTemplatesPath = @"C:\work\FHIR-Fluid-Converter\Fhir.Fluid.Converter.Benchmark\DevBranchTemplates\Ccda";
-        public const string TemplatesPath = @"C:\work\HAG-FHIR\HAG.FHIR.API\data\Templates\Ccda";
-        public const string RootTemplatePath = @"C:\work\HAG-FHIR\HAG.FHIR.API\data\Templates\Ccda\CCD.liquid";
+        private static readonly string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+        public static readonly string SampleDataPath = $"{BaseDirectory}/SampleData/";
+        public static readonly string TemplatesPath = $"{BaseDirectory}/Templates/Ccda";
+        public static readonly string RootTemplatePath = $"{BaseDirectory}/Templates/Ccda/CCD.liquid";
     }
 }

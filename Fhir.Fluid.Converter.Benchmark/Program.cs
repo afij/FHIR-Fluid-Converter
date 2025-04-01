@@ -6,13 +6,10 @@ namespace Fhir.Fluid.Converter.Benchmark
     {
         static void Main(string[] args)
         {
-            //var test = new FluidCachedBenchmark();
+            //var test = new FluidStaticParserCachedProviderBenchmark();
             //test.InputPayloadFileName = "CDA.ccda";
-            //test.InputPayloadFileName = "testModel.txt";
+            //test.GlobalSetup();
             //var parsedFHIRString = await test.ExecuteBenchmark();
-            //Console.WriteLine(parsedFHIRString);
-            //var fhirConverterTest = new FhirConverterBenchmark();
-            //fhirConverterTest.ParseAndRender();
             BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
         }
     }
