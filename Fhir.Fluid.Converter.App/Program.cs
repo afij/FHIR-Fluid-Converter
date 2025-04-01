@@ -13,7 +13,7 @@ var parser = new CCDParser(
     }
 );
 
-var inputCCDA = File.ReadAllText(@"C:\work\FluidCdaTest\data\SampleData\LargeCDA.ccda");
+var inputCCDA = File.ReadAllText(@"C:\work\FHIR-Fluid-Converter\data\SampleData\LargeCDA.ccda");
 
 string renderedString = await parser.ParseAndRenderAsync(inputCCDA);
 
