@@ -156,6 +156,22 @@ namespace Fhir.Fluid.Converter.Parsers
             });
         }
 
+        /// <summary>
+        /// Parse and Render a CCDA string into a FHIR string
+        /// </summary>
+        /// <param name="inputCCDA"></param>
+        /// <returns></returns>
+        public async Task<string> ParseAndRenderAsync(string inputCCDA)
+        {
+            IFluidTemplate template = Parse();
+            return await RenderAsync(template, inputCCDA);
+        }
+
+        /// <summary>
+        /// Manually parse the RootTemplate into an IFluidTemplate
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public IFluidTemplate Parse()
         {
             // Load model from disk
@@ -179,6 +195,12 @@ namespace Fhir.Fluid.Converter.Parsers
             }
         }
 
+        /// <summary>
+        /// Render the specified IFluidTemplate with an string CCDA
+        /// </summary>
+        /// <param name="template">IFluidTemplate to be rendered</param>
+        /// <param name="inputCCDA">String CCDA to be converted</param>
+        /// <returns></returns>
         public async Task<string> RenderAsync(IFluidTemplate template, string inputCCDA)
         {
             // Process model into an object (fixes data etc) and add to a new context
