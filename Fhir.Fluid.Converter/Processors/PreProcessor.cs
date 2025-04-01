@@ -29,6 +29,8 @@ namespace Fhir.Fluid.Converter.Processors
                 // Strip whitepsace from original data to lower memory footprint once GZIP'd
                 var originalData = xDocument.ToString(SaveOptions.DisableFormatting);
 
+                XElement root = xDocument.Root ?? throw new InvalidOperationException("Invalid XML structure: Root element is missing.");
+
                 // Remove redundant namespaces to avoid appending namespace prefix before elements
                 var defaultNamespace = xDocument.Root?.GetDefaultNamespace().NamespaceName;
                 xDocument.Root?.Attributes()
@@ -38,10 +40,10 @@ namespace Fhir.Fluid.Converter.Processors
                 // Normalize non-default namespace prefix in elements
                 var namespaces = xDocument.Root?.Attributes()
                     .Where(x => x.IsNamespaceDeclaration && x.Value != defaultNamespace);
-                NormalizeNamespacePrefix(xDocument?.Root, namespaces);
+                NormalizeNamespacePrefix(root, namespaces);
 
                 // Change XText to XElement with name "_" to avoid serializing depth difference, e.g., given="foo" and given.#text="foo"
-                ReplaceTextWithElement(xDocument?.Root);
+                ReplaceTextWithElement(root);
 
                 // Convert to json dictionary
                 var jsonString = JsonConvert.SerializeXNode(xDocument);
@@ -98,10 +100,9 @@ namespace Fhir.Fluid.Converter.Processors
             }
 
             // Iterate reversely as the list itself is updating
-            var nodes = element.Nodes().ToList();
-            for (var i = nodes.Count - 1; i >= 0; --i)
+            foreach (var node in element.Nodes().ToArray())
             {
-                switch (nodes[i])
+                switch (node)
                 {
                     case XText textNode:
                         element.Add(new XElement("_", textNode.Value));

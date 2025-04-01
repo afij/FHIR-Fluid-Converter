@@ -140,16 +140,14 @@ namespace Fhir.Fluid.Converter.Parsers
                 }
 
                 // Parse string to get input object's member expression
-                var splitInputObject = evaluateObj.InputObjectString.Split('.');
-                List<MemberSegment> inputMemberSegments = splitInputObject.Select(x => new IdentifierSegment(x)).ToList().Cast<MemberSegment>().ToList();
-                var memberExpression = new MemberExpression(inputMemberSegments);
+                var memberSegments = evaluateObj.InputObjectString.Split('.')
+                    .Select(x => new IdentifierSegment(x))
+                    .ToList();
+                var memberExpression = new MemberExpression(memberSegments);
                 var valueFromExpression = await memberExpression.EvaluateAsync(c);
 
-                // Construct temp options with registered tags
-                var tempOptions = new TemplateOptions();
-                tempOptions.Filters.RegisterCustomFilters(this);
-
-                var output = template.Render(new TemplateContext(new Dictionary<string, object> { { "obj", valueFromExpression } }, tempOptions));
+                // Reuse existing _templateOptions
+                var output = template.Render(new TemplateContext(new Dictionary<string, object> { { "obj", valueFromExpression } }, _templateOptions));
                 var assignmentStatement = new AssignStatement(evaluateObj.Variable, new LiteralExpression(new StringValue(output.Trim())));
                 await assignmentStatement.WriteToAsync(w, e, c);
                 return Completion.Normal;
