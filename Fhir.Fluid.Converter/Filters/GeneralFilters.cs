@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Fhir.Fluid.Converter.Filters
 {
-    public static class GeneralFilters
+    internal static class GeneralFilters
     {
         public const string CODE_MAPPING_VALUE_NAME = "CodeMapping";
         public static void RegisterGeneralFilters(this FilterCollection filters)
@@ -28,21 +28,21 @@ namespace Fhir.Fluid.Converter.Filters
         /// <exception cref="Exception"></exception>
         public static ValueTask<FluidValue> GetProperty(FluidValue input, FilterArguments arguments, TemplateContext context)
         {
-            string valueSetType = null;
+            if (arguments == null || arguments.Count < 1)
+            {
+                throw new ArgumentException("Invalid get_property usage: At least one argument is required.");
+            }
+
+            string valueSetType;
             string property = "code";
-            if (arguments != null && arguments.Count > 0)
+
+            valueSetType = arguments.At(0).ToStringValue();
+            var tempProperty = arguments.At(1).ToStringValue();
+            if (!string.IsNullOrEmpty(tempProperty))
             {
-                valueSetType = arguments.At(0).ToStringValue();
-                var tempProperty = arguments.At(1).ToStringValue();
-                if (!string.IsNullOrEmpty(tempProperty))
-                {
-                    property = tempProperty;
-                }
+                property = tempProperty;
             }
-            else
-            {
-                throw new Exception("Invalid get_property usage, incorrect amount of arguments");
-            }
+
             context.AmbientValues.TryGetValue(CODE_MAPPING_VALUE_NAME, out var codeMappingObj);
             CodeMapping codeMapping = (CodeMapping)codeMappingObj;
             var map = codeMapping?.Mapping?.GetValueOrDefault(valueSetType, null);

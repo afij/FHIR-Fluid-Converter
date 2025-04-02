@@ -1,6 +1,6 @@
 ﻿namespace Fhir.Fluid.Converter.Models
 {
-    public enum DateTimePrecision
+    internal enum DateTimePrecision
     {
         Year,
         Month,

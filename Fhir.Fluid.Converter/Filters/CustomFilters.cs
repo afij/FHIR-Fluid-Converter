@@ -3,7 +3,7 @@ using Fluid;
 
 namespace Fhir.Fluid.Converter.Filters
 {
-    public static class CustomFilters
+    internal static class CustomFilters
     {
         public static void RegisterCustomFilters(this FilterCollection filters, CCDParser parser)
         {

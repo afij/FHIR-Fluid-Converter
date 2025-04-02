@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Fhir.Fluid.Converter.Filters
 {
-    public static class MiscFilters
+    internal static class MiscFilters
     {
         public static void RegisterMiscFilters(this FilterCollection filters)
         {

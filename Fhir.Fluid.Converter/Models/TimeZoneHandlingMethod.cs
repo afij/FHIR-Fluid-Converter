@@ -1,6 +1,6 @@
 ﻿namespace Fhir.Fluid.Converter.Models
 {
-    public enum TimeZoneHandlingMethod
+    internal enum TimeZoneHandlingMethod
     {
         Preserve,
         Local,

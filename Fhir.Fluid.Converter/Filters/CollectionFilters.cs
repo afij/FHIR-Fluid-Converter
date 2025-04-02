@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Fhir.Fluid.Converter.Filters
 {
-    public static class CollectionFilters
+    internal static class CollectionFilters
     {
         private static CCDParser _parser;
 

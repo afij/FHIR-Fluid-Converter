@@ -4,7 +4,7 @@ using System;
 
 namespace Fhir.Fluid.Converter.Utilities
 {
-    public class TemplateUtility
+    internal class TemplateUtility
     {
         /// <summary>
         /// Deserialize string content into CodeMapping object

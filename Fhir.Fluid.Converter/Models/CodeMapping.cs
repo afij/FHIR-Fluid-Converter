@@ -2,7 +2,7 @@
 
 namespace Fhir.Fluid.Converter.Models
 {
-    public class CodeMapping
+    internal class CodeMapping
     {
         public CodeMapping(Dictionary<string, Dictionary<string, Dictionary<string, string>>> mapping)
         {

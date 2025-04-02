@@ -3,7 +3,7 @@ using Fluid.Ast;
 
 namespace Fhir.Fluid.Converter.Models
 {
-    public struct EvaluateStruct
+    internal struct EvaluateStruct
     {
         public FluidParser Parser { get; set; }
         public string Variable { get; set; }

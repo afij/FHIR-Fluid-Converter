@@ -6,7 +6,8 @@ namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
     [MemoryDiagnoser, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
     public class ComparisonBenchmarks
     {
-        [Params("CDA.ccda", "LargeCDA.ccda")]
+        //[Params("CDA.ccda", "LargeCDA.ccda")]
+        [Params("CDA.ccda")]
         public string InputPayloadFileName { get; set; }
 
         public string InputPayloadFilePath => BenchmarkConstants.SampleDataPath + InputPayloadFileName;

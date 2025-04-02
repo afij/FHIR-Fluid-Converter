@@ -1,6 +1,6 @@
 ﻿namespace Fhir.Fluid.Converter.Models
 {
-    public enum DateTimeType
+    internal enum DateTimeType
     {
         Fhir,
         Hl7v2,

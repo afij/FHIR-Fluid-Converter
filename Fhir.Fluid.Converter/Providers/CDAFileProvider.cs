@@ -8,7 +8,7 @@ namespace Fhir.Fluid.Converter.Providers
     /// <summary>
     /// Custom IFileProvider used to access files for include and render statements
     /// </summary>
-    public class CDAFileProvider : ICDAFileProvider
+    internal class CDAFileProvider : ICDAFileProvider
     {
         private readonly PhysicalFileProvider _innerProvider;
 

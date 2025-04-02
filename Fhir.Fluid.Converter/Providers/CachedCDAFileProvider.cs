@@ -10,7 +10,7 @@ namespace Fhir.Fluid.Converter.Providers
     /// <summary>
     /// Custom IFileProvider that caches file content to avoid rereading the disk during execution. Used to access files for include and render statements
     /// </summary>
-    public class CachedCDAFileProvider : ICDAFileProvider
+    internal class CachedCDAFileProvider : ICDAFileProvider
     {
         private readonly PhysicalFileProvider _innerProvider;
         private readonly ConcurrentDictionary<string, CachedFileEntry> _cache;

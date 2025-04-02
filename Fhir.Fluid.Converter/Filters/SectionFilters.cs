@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Fhir.Fluid.Converter.Filters
 {
-    public static partial class SectionFilters
+    internal static partial class SectionFilters
     {
         public static void RegisterSectionFilters(this FilterCollection filters)
         {

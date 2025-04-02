@@ -1,7 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
-using Fhir.Fluid.Converter.Parsers;
 using Fhir.Fluid.Converter.Parsers.Options;
-using Fluid;
 using System.Threading.Tasks;
 
 namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
@@ -12,17 +10,16 @@ namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
     [MemoryDiagnoser]
     public class FluidBenchmark : BaseBenchmark
     {
-        private CCDParser _parser;
-        private IFluidTemplate _template;
+        private FhirConverter _converter;
 
         public override void SetupBenchmark()
         {
             // No setup required
         }
 
-        public override void Parse()
+        public override async Task<string> ParseAndRenderAsync()
         {
-            _parser = new CCDParser(
+            _converter = new FhirConverter(
                 new CCDParserOptions()
                 {
                     TemplateDirectoryPath = BenchmarkConstants.TemplatesPath,
@@ -30,12 +27,7 @@ namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
                     UseCachedFileProvider = true
                 }
             );
-            _template = _parser.Parse();
-        }
-
-        public override async Task<string> RenderAsync()
-        {
-            return await _parser.RenderAsync(_template, TestContent);
+            return await _converter.ConvertCcdaToFhirAsync(TestContent);
         }
     }
 }

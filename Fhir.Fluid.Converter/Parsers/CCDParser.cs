@@ -18,7 +18,7 @@ using static Parlot.Fluent.Parsers;
 namespace Fhir.Fluid.Converter.Parsers
 {
     // Tags are written here because they sometimes rely on protected FluidParser variables
-    public class CCDParser : FluidParser
+    internal class CCDParser : FluidParser
     {
         private readonly CCDParserOptions _options;
         private readonly TemplateOptions _templateOptions;
@@ -32,7 +32,7 @@ namespace Fhir.Fluid.Converter.Parsers
         public CCDParser(CCDParserOptions options)
         {
             _options = options;
-            RegisterCustomTags();
+            RegisterCustomFluidTags();
 
             // Create TemplateOptions and register filters and custom provider
             _templateOptions = new TemplateOptions();
@@ -48,13 +48,13 @@ namespace Fhir.Fluid.Converter.Parsers
 
             _templateOptions.FileProvider = _fileProvider;
 
-            ParseCodeMapping();
+            LoadCodeMappings();
         }
 
         /// <summary>
         /// Register custom tags for CCD parsing
         /// </summary>
-        private void RegisterCustomTags()
+        private void RegisterCustomFluidTags()
         {
             RegisterIncludeTag();
             RegisterEvaluateTag();
@@ -63,7 +63,7 @@ namespace Fhir.Fluid.Converter.Parsers
         /// <summary>
         /// Parse ValueSet CodeMapping object and assign to instance variable
         /// </summary>
-        private void ParseCodeMapping()
+        private void LoadCodeMappings()
         {
             // Preload ValueSet data as CodeMapping obj
             var valueSetString = _fileProvider.ReadTemplateFile(@"ValueSet/ValueSet");
@@ -159,10 +159,10 @@ namespace Fhir.Fluid.Converter.Parsers
         /// </summary>
         /// <param name="inputCCDA"></param>
         /// <returns></returns>
-        public async Task<string> ParseAndRenderAsync(string inputCCDA)
+        public async Task<string> ConvertCcdaToFhirAsync(string inputCCDA)
         {
-            IFluidTemplate template = Parse();
-            return await RenderAsync(template, inputCCDA);
+            IFluidTemplate template = ParseRootTemplate();
+            return await RenderTemplateAsync(template, inputCCDA);
         }
 
         /// <summary>
@@ -170,17 +170,10 @@ namespace Fhir.Fluid.Converter.Parsers
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public IFluidTemplate Parse()
+        public IFluidTemplate ParseRootTemplate()
         {
             // Load model from disk
-            //var testModel  = await File.ReadAllTextAsync(@"C:\work\FluidCdaTest\FluidCdaTest\testModel.txt");
             _rootTemplateContent ??= _fileProvider.ReadTemplateFile(_options.RootTemplate);
-            //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Test' test: 'testxd' test2: msg -%}";
-            //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Header' test: testval, test2: testval -%}";
-            //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Header', test: testval, test2: testval2, t3: t3 -%}";
-            //var rootTemplate = "{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}{% include 'Header' test: testval, test2: testval2, t3: t3 -%}";
-            //var rootTemplate = @"{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}
-            //value: {{ patientId }}";
 
             // Parse the template
             if (this.TryParse(_rootTemplateContent, out var template, out var errors))
@@ -199,7 +192,7 @@ namespace Fhir.Fluid.Converter.Parsers
         /// <param name="template">IFluidTemplate to be rendered</param>
         /// <param name="inputCCDA">String CCDA to be converted</param>
         /// <returns></returns>
-        public async Task<string> RenderAsync(IFluidTemplate template, string inputCCDA)
+        public async Task<string> RenderTemplateAsync(IFluidTemplate template, string inputCCDA)
         {
             // Process model into an object (fixes data etc) and add to a new context
             var preProcessedObject = PreProcessor.ParseToObject(inputCCDA);

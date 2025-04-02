@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Fhir.Fluid.Converter.Processors
 {
-    public static class PostProcessor
+    internal static class PostProcessor
     {
         /// <summary>
         /// Performs post processing on converted string 

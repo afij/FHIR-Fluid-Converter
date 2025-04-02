@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fhir.Fluid.Converter.Filters
 {
-    public static class DateFilters
+    internal static class DateFilters
     {
         public static void RegisterDateFilters(this FilterCollection filters)
         {

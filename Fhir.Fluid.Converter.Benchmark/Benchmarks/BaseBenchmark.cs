@@ -25,13 +25,10 @@ namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
         public async Task<string> ParseAndRender(string inputFilePath)
         {
             InputPayloadFileName = inputFilePath;
-            Parse();
-            return await RenderAsync();
+            return await ParseAndRenderAsync();
         }
 
-        public abstract void Parse();
-
-        public abstract Task<string> RenderAsync();
+        public abstract Task<string> ParseAndRenderAsync();
 
         [Benchmark]
         public virtual async Task<string> ExecuteBenchmark()

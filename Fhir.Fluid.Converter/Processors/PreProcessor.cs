@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace Fhir.Fluid.Converter.Processors
 {
-    public static class PreProcessor
+    internal static class PreProcessor
     {
         /// <summary>
         /// Converts a JSON string into a cleaned dictionary object

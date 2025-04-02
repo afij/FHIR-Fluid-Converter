@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Fhir.Fluid.Converter.Filters
 {
-    public static class StringFilters
+    internal static class StringFilters
     {
         public static void RegisterStringFilters(this FilterCollection filters)
         {

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Fhir.Fluid.Converter.Models
 {
-    public class PartialDateTime
+    internal class PartialDateTime
     {
         public PartialDateTime(string input, DateTimeType type = DateTimeType.Fhir)
         {

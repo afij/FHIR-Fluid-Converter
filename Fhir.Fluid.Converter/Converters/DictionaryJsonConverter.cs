@@ -8,7 +8,7 @@ namespace Fhir.Fluid.Converter.Converters
     /// <summary>
     /// One-way JsonConverter to deserialize XML-converted JSON string to IDictionary
     /// </summary>
-    public class DictionaryJsonConverter : JsonConverter
+    internal class DictionaryJsonConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {

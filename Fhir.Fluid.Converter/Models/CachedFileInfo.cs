@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Fhir.Fluid.Converter.Models
 {
-    public class CachedFileInfo : IFileInfo
+    internal class CachedFileInfo : IFileInfo
     {
         private readonly FileInfo _fileInfo;
         private readonly CachedCDAFileProvider _provider;

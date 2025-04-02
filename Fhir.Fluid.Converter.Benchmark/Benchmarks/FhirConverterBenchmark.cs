@@ -13,12 +13,7 @@ namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
             // No setup required
         }
 
-        public override void Parse()
-        {
-            // Do nothing
-        }
-
-        public override Task<string> RenderAsync()
+        public override Task<string> ParseAndRenderAsync()
         {
             ConverterOptions _options = new()
             {
