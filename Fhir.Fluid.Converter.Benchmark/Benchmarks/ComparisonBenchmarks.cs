@@ -6,8 +6,7 @@ namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
     [MemoryDiagnoser, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
     public class ComparisonBenchmarks
     {
-        //[Params("CDA.ccda", "LargeCDA.ccda")]
-        [Params("CDA.ccda")]
+        [Params("CDA.ccda", "LargeCDA.ccda")]
         public string InputPayloadFileName { get; set; }
 
         public string InputPayloadFilePath => BenchmarkConstants.SampleDataPath + InputPayloadFileName;
@@ -15,7 +14,7 @@ namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
         private static FluidBenchmark _fluidBenchmark;
         private static FluidStaticParserBenchmark _staticParserBenchmark;
         private static FluidStaticParserCachedProviderBenchmark _staticCachedParserBenchmark;
-        private readonly FhirConverterBenchmark _fhirConverterBenchmark = new();
+        private readonly MicrosoftFhirConverterBenchmark _fhirConverterBenchmark = new();
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -58,7 +57,7 @@ namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
         }
 
         [Benchmark(Baseline = true), BenchmarkCategory("ParseAndRender")]
-        public object FhirConverter_Parse()
+        public object Microsoft_FhirConverter_Parse()
         {
             return _fhirConverterBenchmark.ParseAndRender(InputPayloadFilePath);
         }

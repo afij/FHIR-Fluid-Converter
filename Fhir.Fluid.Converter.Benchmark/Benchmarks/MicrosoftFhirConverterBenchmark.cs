@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Fhir.Fluid.Converter.Benchmark.Benchmarks
 {
     [MemoryDiagnoser]
-    public class FhirConverterBenchmark : BaseBenchmark
+    public class MicrosoftFhirConverterBenchmark : BaseBenchmark
     {
         public override void SetupBenchmark()
         {
